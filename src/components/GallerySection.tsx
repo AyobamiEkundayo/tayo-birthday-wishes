@@ -53,6 +53,44 @@ export default function GallerySection() {
       backgroundSize: "cover",
       backgroundPosition: "center",
       mobileBackgroundPosition: "top center"
+    },
+    {
+      src: "/lovable-uploads/742c3297-f39c-4f42-8060-6348dcee0450.png", 
+      alt: "Tayo portrait",
+      backgroundSize: "cover",
+      backgroundPosition: "center"
+    },
+    {
+      src: "/lovable-uploads/50c5a0ca-edde-41ba-9bf3-3ed3f106f973.png", 
+      alt: "Tayo and his wife special moment",
+      backgroundSize: "cover",
+      backgroundPosition: "center"
+    },
+    // Repeating some images with different crops to add more variety
+    { 
+      src: "/lovable-uploads/63e0be3e-19a4-4297-beb8-83ceb7e9b673.png", 
+      alt: "Tayo and his wife - close up",
+      backgroundSize: "cover",
+      backgroundPosition: "top center"
+    },
+    { 
+      src: "/lovable-uploads/4f033b12-c280-42db-b005-d199db3042a1.png", 
+      alt: "Tayo and his wife boat adventure",
+      backgroundSize: "cover",
+      backgroundPosition: "bottom center"
+    },
+    { 
+      src: "/lovable-uploads/00fcf5ad-9536-4e93-b8e2-dd36586b133e.png", 
+      alt: "Tayo's birthday celebration",
+      backgroundSize: "cover", 
+      backgroundPosition: "center 25%",
+      mobileBackgroundSize: "contain"
+    },
+    { 
+      src: "/lovable-uploads/24cdb714-b6a5-4d79-ad3e-610bdb4d1e35.png", 
+      alt: "Tayo's romantic moment",
+      backgroundSize: "cover",
+      backgroundPosition: "center 30%"
     }
   ];
 

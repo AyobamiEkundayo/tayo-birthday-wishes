@@ -6,6 +6,8 @@ import MessageSection from "@/components/MessageSection";
 import GallerySection from "@/components/GallerySection";
 import WishesSection from "@/components/WishesSection";
 import FooterSection from "@/components/FooterSection";
+import AnimatedHeroBanner from "@/components/AnimatedHeroBanner";
+import VideoAnimation from "@/components/VideoAnimation";
 import { Confetti } from "@/components/ui/confetti";
 
 const Index = () => {
@@ -24,8 +26,10 @@ const Index = () => {
     <div className="min-h-screen">
       {showConfetti && <Confetti />}
       <HeroSection />
+      <AnimatedHeroBanner />
       <QuoteSection />
       <MessageSection />
+      <VideoAnimation />
       <GallerySection />
       <WishesSection />
       <FooterSection />
