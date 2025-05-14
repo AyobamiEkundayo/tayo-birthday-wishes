@@ -9,6 +9,7 @@ import FooterSection from "@/components/FooterSection";
 import AnimatedHeroBanner from "@/components/AnimatedHeroBanner";
 import VideoAnimation from "@/components/VideoAnimation";
 import { Confetti } from "@/components/ui/confetti";
+import HeroImages from "@/components/HeroImages";
 
 const Index = () => {
   const [showConfetti, setShowConfetti] = useState(false);
@@ -27,6 +28,7 @@ const Index = () => {
       {showConfetti && <Confetti />}
       <HeroSection />
       <AnimatedHeroBanner />
+      <HeroImages />
       <QuoteSection />
       <MessageSection />
       <VideoAnimation />
