@@ -1,6 +1,7 @@
 
 import React, { useCallback, useEffect, useRef } from "react";
 import ReactCanvasConfetti from "react-canvas-confetti";
+import type { CreateTypes } from "react-canvas-confetti";
 
 const canvasStyles = {
   position: "fixed",
@@ -13,9 +14,9 @@ const canvasStyles = {
 } as React.CSSProperties;
 
 export function Confetti() {
-  const refAnimationInstance = useRef<confetti.CreateTypes | null>(null);
+  const refAnimationInstance = useRef<CreateTypes | null>(null);
 
-  const getInstance = useCallback((instance: confetti.CreateTypes | null) => {
+  const getInstance = useCallback((instance: CreateTypes | null) => {
     refAnimationInstance.current = instance;
   }, []);
 
@@ -76,6 +77,6 @@ export function Confetti() {
     return () => clearInterval(interval);
   }, [fire]);
 
-  // Using refConfetti prop instead of ref since that's what the library expects
-  return <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />;
+  // The correct prop name for this library is 'ref', not 'refConfetti'
+  return <ReactCanvasConfetti ref={getInstance} style={canvasStyles} />;
 }

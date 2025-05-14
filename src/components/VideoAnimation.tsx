@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Play } from "lucide-react";
+import { Play, Pause } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -9,15 +9,20 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { ResponsiveImageWithAspectRatio } from "@/components/ui/responsive-image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ImageSlide {
   src: string;
   alt: string;
+  title?: string;
+  subtitle?: string;
   backgroundSize?: string;
   backgroundPosition?: string;
   mobileBackgroundSize?: string;
   mobileBackgroundPosition?: string;
+  overlayColor?: string;
+  textPosition?: "top-left" | "top-center" | "top-right" | "center-left" | "center" | "center-right" | "bottom-left" | "bottom-center" | "bottom-right";
+  graphicType?: "hearts" | "stars" | "confetti" | "balloons" | "waves" | "circles" | "none";
 }
 
 export default function VideoAnimation() {
@@ -28,46 +33,81 @@ export default function VideoAnimation() {
     { 
       src: "/lovable-uploads/63e0be3e-19a4-4297-beb8-83ceb7e9b673.png", 
       alt: "Tayo and his wife in matching outfits",
+      title: "Perfect Match",
+      subtitle: "A beautiful journey together",
       backgroundSize: "cover",
-      backgroundPosition: "center"
+      backgroundPosition: "center",
+      textPosition: "bottom-center",
+      overlayColor: "rgba(0,0,0,0.4)",
+      graphicType: "hearts"
     },
     { 
       src: "/lovable-uploads/4f033b12-c280-42db-b005-d199db3042a1.png", 
       alt: "Tayo and his wife on a boat ride",
+      title: "Adventure Awaits",
+      subtitle: "Sailing through life's journey",
       backgroundSize: "cover",
-      backgroundPosition: "center 30%"
+      backgroundPosition: "center 30%",
+      textPosition: "top-center",
+      overlayColor: "rgba(0,0,0,0.3)",
+      graphicType: "waves"
     },
     { 
       src: "/lovable-uploads/00fcf5ad-9536-4e93-b8e2-dd36586b133e.png", 
       alt: "Tayo celebrating his birthday",
+      title: "Happy Birthday!",
+      subtitle: "May 23rd - Celebrating You",
       backgroundSize: "cover", 
       backgroundPosition: "center",
-      mobileBackgroundSize: "contain"
+      mobileBackgroundSize: "contain",
+      textPosition: "bottom-right",
+      overlayColor: "rgba(155,135,245,0.4)",
+      graphicType: "balloons"
     },
     { 
       src: "/lovable-uploads/24cdb714-b6a5-4d79-ad3e-610bdb4d1e35.png", 
       alt: "Tayo and his wife looking at each other",
+      title: "Love & Laughter",
+      subtitle: "Creating memories that last forever",
       backgroundSize: "cover",
-      backgroundPosition: "center"
+      backgroundPosition: "center",
+      textPosition: "top-right",
+      overlayColor: "rgba(255,100,121,0.3)",
+      graphicType: "stars"
     },
     { 
       src: "/lovable-uploads/1605e45b-384c-4950-8f6f-90cf99f7106c.png",
       alt: "Tayo and his wife in airplane",
+      title: "Sky High Dreams",
+      subtitle: "Exploring the world together",
       backgroundSize: "cover",
       backgroundPosition: "center",
-      mobileBackgroundPosition: "top center"
+      mobileBackgroundPosition: "top center",
+      textPosition: "center-left",
+      overlayColor: "rgba(51,195,240,0.4)",
+      graphicType: "clouds"
     },
     {
       src: "/lovable-uploads/742c3297-f39c-4f42-8060-6348dcee0450.png",
       alt: "Tayo portrait",
+      title: "The Man of the Hour",
+      subtitle: "Celebrating another year of awesomeness",
       backgroundSize: "cover",
-      backgroundPosition: "center"
+      backgroundPosition: "center",
+      textPosition: "bottom-left",
+      overlayColor: "rgba(139,92,246,0.4)",
+      graphicType: "confetti"
     },
     {
       src: "/lovable-uploads/50c5a0ca-edde-41ba-9bf3-3ed3f106f973.png",
       alt: "Tayo and his wife special moment",
+      title: "Special Moments",
+      subtitle: "Every day is a gift with you",
       backgroundSize: "cover",
-      backgroundPosition: "center"
+      backgroundPosition: "center",
+      textPosition: "center",
+      overlayColor: "rgba(249,115,22,0.3)",
+      graphicType: "circles"
     }
   ];
 
@@ -77,7 +117,7 @@ export default function VideoAnimation() {
     if (isPlaying) {
       interval = window.setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % slides.length);
-      }, 1500);
+      }, 3000);
     }
     
     return () => clearInterval(interval);
@@ -85,6 +125,185 @@ export default function VideoAnimation() {
 
   const togglePlayback = () => {
     setIsPlaying(!isPlaying);
+  };
+
+  // Generate graphics elements based on the type
+  const renderGraphics = (type?: string) => {
+    switch(type) {
+      case "hearts":
+        return (
+          <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute text-primary-foreground opacity-80"
+                initial={{ scale: 0, rotate: 0, x: `${Math.random() * 100}%`, y: `${Math.random() * 100}%` }}
+                animate={{ 
+                  scale: [0, 1, 0.8], 
+                  rotate: [0, 10, -10, 0],
+                  opacity: [0, 0.8, 0] 
+                }}
+                transition={{ 
+                  repeat: Infinity, 
+                  duration: 4, 
+                  delay: i * 0.8,
+                  ease: "easeInOut" 
+                }}
+              >
+                <span className="text-2xl md:text-4xl">❤️</span>
+              </motion.div>
+            ))}
+          </div>
+        );
+      case "stars":
+        return (
+          <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute text-yellow-400"
+                initial={{ scale: 0, x: `${Math.random() * 100}%`, y: `${Math.random() * 100}%` }}
+                animate={{ 
+                  scale: [0, 1.2, 0], 
+                  opacity: [0, 1, 0] 
+                }}
+                transition={{ 
+                  repeat: Infinity, 
+                  duration: 3, 
+                  delay: i * 0.6,
+                  ease: "easeInOut" 
+                }}
+              >
+                <span className="text-xl md:text-3xl">⭐</span>
+              </motion.div>
+            ))}
+          </div>
+        );
+      case "confetti":
+        return (
+          <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+            {[...Array(20)].map((_, i) => {
+              const colors = ["bg-primary", "bg-accent", "bg-purple-400", "bg-blue-400", "bg-yellow-400"];
+              const size = Math.random() * 8 + 4;
+              return (
+                <motion.div
+                  key={i}
+                  className={`absolute ${colors[i % colors.length]} rounded-full`}
+                  style={{ width: size, height: size }}
+                  initial={{ 
+                    x: `${50 + (Math.random() * 40 - 20)}%`, 
+                    y: "-10%", 
+                    opacity: 1 
+                  }}
+                  animate={{ 
+                    y: "110%", 
+                    x: `${50 + (Math.random() * 100 - 50)}%`,
+                    opacity: [1, 1, 0],
+                    rotate: Math.random() * 360
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 2.5 + Math.random() * 2, 
+                    delay: i * 0.2,
+                    ease: "easeInOut" 
+                  }}
+                />
+              );
+            })}
+          </div>
+        );
+      case "balloons":
+        return (
+          <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+            {[...Array(5)].map((_, i) => {
+              const emojis = ["🎈", "🎁", "🎂", "🎊", "🎉"];
+              return (
+                <motion.div
+                  key={i}
+                  className="absolute"
+                  initial={{ 
+                    y: "120%", 
+                    x: `${Math.random() * 100}%`, 
+                    opacity: 1 
+                  }}
+                  animate={{ 
+                    y: "-20%",
+                    opacity: [0, 1, 1, 0],
+                    rotate: [0, 10, -10, 5]
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 8, 
+                    delay: i * 1.5,
+                    ease: "easeInOut" 
+                  }}
+                >
+                  <span className="text-3xl md:text-5xl">{emojis[i % emojis.length]}</span>
+                </motion.div>
+              );
+            })}
+          </div>
+        );
+      case "waves":
+        return (
+          <div className="absolute bottom-0 left-0 right-0 h-1/3 pointer-events-none z-10 overflow-hidden">
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={i}
+                className={`absolute bottom-0 left-0 right-0 bg-sky-${300 + i*200} bg-opacity-${20 - i*5} h-1/3`}
+                initial={{ x: "-100%" }}
+                animate={{ x: "100%" }}
+                transition={{ 
+                  repeat: Infinity, 
+                  duration: 10, 
+                  delay: i * 2,
+                  ease: "linear" 
+                }}
+                style={{
+                  height: `${10 + i*5}%`,
+                  bottom: `${i*5}%`,
+                  opacity: 0.2 - i*0.05,
+                  borderRadius: "50% 50% 0 0"
+                }}
+              />
+            ))}
+          </div>
+        );
+      case "circles":
+        return (
+          <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+            {[...Array(8)].map((_, i) => {
+              const colors = ["border-primary", "border-accent", "border-purple-400", "border-yellow-400"];
+              const size = 40 + Math.random() * 60;
+              return (
+                <motion.div
+                  key={i}
+                  className={`absolute rounded-full border-2 ${colors[i % colors.length]} border-opacity-40`}
+                  style={{ width: size, height: size }}
+                  initial={{ 
+                    x: `${Math.random() * 100}%`, 
+                    y: `${Math.random() * 100}%`, 
+                    scale: 0,
+                    opacity: 0 
+                  }}
+                  animate={{ 
+                    scale: [0, 1.5, 2],
+                    opacity: [0, 0.5, 0]
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 4 + Math.random() * 3, 
+                    delay: i * 0.7,
+                    ease: "easeOut" 
+                  }}
+                />
+              );
+            })}
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -112,33 +331,95 @@ export default function VideoAnimation() {
             className="relative rounded-xl overflow-hidden shadow-soft"
           >
             {isPlaying ? (
-              <div className="relative aspect-w-16 aspect-h-9">
-                <ResponsiveImageWithAspectRatio
-                  src={slides[currentSlide].src}
-                  alt={slides[currentSlide].alt}
-                  aspectRatio={16/9}
-                  backgroundSize={slides[currentSlide].backgroundSize}
-                  backgroundPosition={slides[currentSlide].backgroundPosition}
-                  mobileBackgroundSize={slides[currentSlide].mobileBackgroundSize}
-                  mobileBackgroundPosition={slides[currentSlide].mobileBackgroundPosition}
-                  className="transition-opacity duration-1000"
-                />
-              </div>
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={currentSlide}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1 }}
+                  className="relative aspect-w-16 aspect-h-9"
+                >
+                  <div className="relative w-full h-full">
+                    <ResponsiveImageWithAspectRatio
+                      src={slides[currentSlide].src}
+                      alt={slides[currentSlide].alt}
+                      aspectRatio={16/9}
+                      backgroundSize={slides[currentSlide].backgroundSize}
+                      backgroundPosition={slides[currentSlide].backgroundPosition}
+                      mobileBackgroundSize={slides[currentSlide].mobileBackgroundSize}
+                      mobileBackgroundPosition={slides[currentSlide].mobileBackgroundPosition}
+                      className="transition-opacity duration-1000"
+                    />
+                    
+                    {/* Overlay with gradient */}
+                    <div 
+                      className="absolute inset-0 pointer-events-none" 
+                      style={{ backgroundColor: slides[currentSlide].overlayColor || 'rgba(0,0,0,0.2)' }}
+                    />
+                    
+                    {/* Dynamic graphics */}
+                    {renderGraphics(slides[currentSlide].graphicType)}
+                    
+                    {/* Text overlay */}
+                    <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 text-white z-20 ${getTextPositionClasses(slides[currentSlide].textPosition)}`}>
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, duration: 0.8 }}
+                      >
+                        {slides[currentSlide].title && (
+                          <h3 className="font-heading text-2xl md:text-4xl font-bold mb-2 text-shadow">
+                            {slides[currentSlide].title}
+                          </h3>
+                        )}
+                        {slides[currentSlide].subtitle && (
+                          <p className="text-sm md:text-base text-shadow-sm">
+                            {slides[currentSlide].subtitle}
+                          </p>
+                        )}
+                      </motion.div>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             ) : (
               <Carousel className="w-full">
                 <CarouselContent>
                   {slides.map((slide, index) => (
                     <CarouselItem key={index}>
                       <div className="p-1">
-                        <ResponsiveImageWithAspectRatio
-                          src={slide.src}
-                          alt={slide.alt}
-                          aspectRatio={16/9}
-                          backgroundSize={slide.backgroundSize}
-                          backgroundPosition={slide.backgroundPosition}
-                          mobileBackgroundSize={slide.mobileBackgroundSize}
-                          mobileBackgroundPosition={slide.mobileBackgroundPosition}
-                        />
+                        <div className="relative w-full h-full">
+                          <ResponsiveImageWithAspectRatio
+                            src={slide.src}
+                            alt={slide.alt}
+                            aspectRatio={16/9}
+                            backgroundSize={slide.backgroundSize}
+                            backgroundPosition={slide.backgroundPosition}
+                            mobileBackgroundSize={slide.mobileBackgroundSize}
+                            mobileBackgroundPosition={slide.mobileBackgroundPosition}
+                          />
+                          
+                          {/* Overlay with gradient */}
+                          <div 
+                            className="absolute inset-0 pointer-events-none" 
+                            style={{ backgroundColor: slide.overlayColor || 'rgba(0,0,0,0.2)' }}
+                          />
+                          
+                          {/* Text overlay */}
+                          <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 text-white ${getTextPositionClasses(slide.textPosition)}`}>
+                            {slide.title && (
+                              <h3 className="font-heading text-xl md:text-3xl font-bold mb-2 text-shadow">
+                                {slide.title}
+                              </h3>
+                            )}
+                            {slide.subtitle && (
+                              <p className="text-xs md:text-sm text-shadow-sm">
+                                {slide.subtitle}
+                              </p>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </CarouselItem>
                   ))}
@@ -150,13 +431,39 @@ export default function VideoAnimation() {
             
             <button
               onClick={togglePlayback}
-              className={`absolute bottom-4 right-4 z-10 p-3 rounded-full transition-all duration-300 ${isPlaying ? 'bg-white text-primary' : 'bg-primary text-white'}`}
+              className={`absolute bottom-4 right-4 z-30 p-3 rounded-full transition-all duration-300 ${isPlaying ? 'bg-white text-primary' : 'bg-primary text-white'}`}
             >
-              <Play size={24} fill={isPlaying ? "currentColor" : "none"} />
+              {isPlaying ? <Pause size={24} /> : <Play size={24} fill="none" />}
             </button>
           </motion.div>
         </div>
       </div>
     </section>
   );
+}
+
+// Helper function to determine text position classes based on the position prop
+function getTextPositionClasses(position?: string) {
+  switch(position) {
+    case "top-left":
+      return "justify-start items-start text-left";
+    case "top-center":
+      return "justify-start items-center text-center";
+    case "top-right":
+      return "justify-start items-end text-right";
+    case "center-left":
+      return "justify-center items-start text-left";
+    case "center":
+      return "justify-center items-center text-center";
+    case "center-right":
+      return "justify-center items-end text-right";
+    case "bottom-left":
+      return "justify-end items-start text-left";
+    case "bottom-center":
+      return "justify-end items-center text-center";
+    case "bottom-right":
+      return "justify-end items-end text-right";
+    default:
+      return "justify-center items-center text-center";
+  }
 }
