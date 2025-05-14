@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { ResponsiveImageWithAspectRatio } from "@/components/ui/responsive-image";
+import { ResponsiveImage, ResponsiveImageWithAspectRatio } from "@/components/ui/responsive-image";
 
 interface GalleryImage {
   src: string;
