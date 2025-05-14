@@ -76,6 +76,6 @@ export function Confetti() {
     return () => clearInterval(interval);
   }, [fire]);
 
-  // Fixed the confetti component by using ref instead of refConfetti prop
-  return <ReactCanvasConfetti ref={getInstance} style={canvasStyles} />;
+  // Use the correct prop name for the ref callback
+  return <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />;
 }
