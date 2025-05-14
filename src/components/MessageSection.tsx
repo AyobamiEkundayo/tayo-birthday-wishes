@@ -1,34 +1,26 @@
 
 import React from "react";
-import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
+import { ResponsiveImageWithAspectRatio } from "@/components/ui/responsive-image";
 
 export default function MessageSection() {
   return (
     <section className="py-20 px-4">
       <div className="container max-w-4xl">
         <div className="flex flex-col md:flex-row gap-12 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="md:w-1/2"
-          >
-            <img 
+          <div className="md:w-1/2">
+            <ResponsiveImageWithAspectRatio
               src="/lovable-uploads/50c5a0ca-edde-41ba-9bf3-3ed3f106f973.png" 
-              alt="Tayo and his wife" 
-              className="rounded-xl shadow-soft w-full h-auto"
+              alt="Tayo and his wife"
+              aspectRatio={4/3}
+              backgroundSize="cover"
+              backgroundPosition="center"
+              mobileBackgroundSize="contain"
+              className="rounded-xl shadow-soft"
             />
-          </motion.div>
+          </div>
           
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="md:w-1/2"
-          >
+          <div className="md:w-1/2">
             <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6 text-gray-800">
               Dearest Tayo
             </h2>
@@ -52,7 +44,7 @@ export default function MessageSection() {
               Today, we celebrate not just another year in your life, but everything that makes you the 
               remarkable person you are. The years ahead hold nothing but promise with you by my side.
             </p>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
