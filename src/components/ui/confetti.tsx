@@ -1,7 +1,6 @@
 
 import React, { useCallback, useEffect, useRef } from "react";
 import ReactCanvasConfetti from "react-canvas-confetti";
-import type { IConfettiOptions } from "react-canvas-confetti";
 
 const canvasStyles = {
   position: "fixed",
@@ -13,6 +12,14 @@ const canvasStyles = {
   zIndex: 50,
 } as React.CSSProperties;
 
+type ConfettiOptions = {
+  spread: number;
+  startVelocity?: number;
+  decay?: number;
+  scalar?: number;
+  colors?: string[];
+};
+
 export function Confetti() {
   const refAnimationInstance = useRef<any>(null);
 
@@ -20,7 +27,7 @@ export function Confetti() {
     refAnimationInstance.current = instance;
   }, []);
 
-  const makeShot = useCallback((particleRatio: number, opts: IConfettiOptions) => {
+  const makeShot = useCallback((particleRatio: number, opts: ConfettiOptions) => {
     refAnimationInstance.current &&
       refAnimationInstance.current({
         ...opts,
@@ -77,5 +84,5 @@ export function Confetti() {
     return () => clearInterval(interval);
   }, [fire]);
 
-  return <ReactCanvasConfetti style={canvasStyles} refConfetti={getInstance} />;
+  return <ReactCanvasConfetti style={canvasStyles} ref={getInstance} />;
 }

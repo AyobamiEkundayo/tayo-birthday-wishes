@@ -23,6 +23,8 @@ interface ImageSlide {
   overlayColor?: string;
   textPosition?: "top-left" | "top-center" | "top-right" | "center-left" | "center" | "center-right" | "bottom-left" | "bottom-center" | "bottom-right";
   graphicType?: "hearts" | "stars" | "confetti" | "balloons" | "waves" | "circles" | "none";
+  textColor?: string;
+  highlightColor?: string;
 }
 
 export default function VideoAnimation() {
@@ -39,7 +41,9 @@ export default function VideoAnimation() {
       backgroundPosition: "center",
       textPosition: "bottom-center",
       overlayColor: "rgba(0,0,0,0.4)",
-      graphicType: "hearts"
+      graphicType: "hearts",
+      textColor: "#ffffff",
+      highlightColor: "#ea384c"
     },
     { 
       src: "/lovable-uploads/4f033b12-c280-42db-b005-d199db3042a1.png", 
@@ -50,7 +54,9 @@ export default function VideoAnimation() {
       backgroundPosition: "center 30%",
       textPosition: "top-center",
       overlayColor: "rgba(0,0,0,0.3)",
-      graphicType: "waves"
+      graphicType: "waves",
+      textColor: "#ffffff",
+      highlightColor: "#33C3F0"
     },
     { 
       src: "/lovable-uploads/00fcf5ad-9536-4e93-b8e2-dd36586b133e.png", 
@@ -62,7 +68,9 @@ export default function VideoAnimation() {
       mobileBackgroundSize: "contain",
       textPosition: "bottom-right",
       overlayColor: "rgba(155,135,245,0.4)",
-      graphicType: "balloons"
+      graphicType: "balloons",
+      textColor: "#ffffff",
+      highlightColor: "#D6BCFA"
     },
     { 
       src: "/lovable-uploads/24cdb714-b6a5-4d79-ad3e-610bdb4d1e35.png", 
@@ -73,7 +81,24 @@ export default function VideoAnimation() {
       backgroundPosition: "center",
       textPosition: "top-right",
       overlayColor: "rgba(255,100,121,0.3)",
-      graphicType: "stars"
+      graphicType: "stars",
+      textColor: "#ffffff",
+      highlightColor: "#FEC6A1" 
+    },
+    { 
+      src: "/lovable-uploads/10fc4752-30d5-4743-ae6a-c0c0d3b4c2f8.png",
+      alt: "Tayo special moment",
+      title: "Cherished Moments",
+      subtitle: "Every second counts",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      mobileBackgroundSize: "cover",
+      mobileBackgroundPosition: "center 30%",
+      textPosition: "bottom-center",
+      overlayColor: "rgba(249,115,22,0.4)",
+      graphicType: "circles",
+      textColor: "#ffffff",
+      highlightColor: "#F97316"
     },
     { 
       src: "/lovable-uploads/1605e45b-384c-4950-8f6f-90cf99f7106c.png",
@@ -85,7 +110,9 @@ export default function VideoAnimation() {
       mobileBackgroundPosition: "top center",
       textPosition: "center-left",
       overlayColor: "rgba(51,195,240,0.4)",
-      graphicType: "circles"
+      graphicType: "circles",
+      textColor: "#ffffff",
+      highlightColor: "#33C3F0"
     },
     {
       src: "/lovable-uploads/742c3297-f39c-4f42-8060-6348dcee0450.png",
@@ -96,7 +123,9 @@ export default function VideoAnimation() {
       backgroundPosition: "center",
       textPosition: "bottom-left",
       overlayColor: "rgba(139,92,246,0.4)",
-      graphicType: "confetti"
+      graphicType: "confetti",
+      textColor: "#ffffff",
+      highlightColor: "#8B5CF6"
     },
     {
       src: "/lovable-uploads/50c5a0ca-edde-41ba-9bf3-3ed3f106f973.png",
@@ -107,7 +136,9 @@ export default function VideoAnimation() {
       backgroundPosition: "center",
       textPosition: "center",
       overlayColor: "rgba(249,115,22,0.3)",
-      graphicType: "circles"
+      graphicType: "circles",
+      textColor: "#ffffff",
+      highlightColor: "#F97316"
     }
   ];
 
@@ -128,7 +159,9 @@ export default function VideoAnimation() {
   };
 
   // Generate graphics elements based on the type
-  const renderGraphics = (type?: string) => {
+  const renderGraphics = (type?: string, highlightColor?: string) => {
+    const color = highlightColor || "#9b87f5";
+    
     switch(type) {
       case "hearts":
         return (
@@ -183,13 +216,17 @@ export default function VideoAnimation() {
         return (
           <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
             {[...Array(20)].map((_, i) => {
-              const colors = ["bg-primary", "bg-accent", "bg-purple-400", "bg-blue-400", "bg-yellow-400"];
+              const colors = ["#ea384c", "#9b87f5", "#D6BCFA", color, "#F97316"];
               const size = Math.random() * 8 + 4;
               return (
                 <motion.div
                   key={i}
-                  className={`absolute ${colors[i % colors.length]} rounded-full`}
-                  style={{ width: size, height: size }}
+                  className="absolute rounded-full"
+                  style={{ 
+                    width: size, 
+                    height: size,
+                    backgroundColor: colors[i % colors.length]
+                  }}
                   initial={{ 
                     x: `${50 + (Math.random() * 40 - 20)}%`, 
                     y: "-10%", 
@@ -250,7 +287,7 @@ export default function VideoAnimation() {
             {[...Array(3)].map((_, i) => (
               <motion.div
                 key={i}
-                className={`absolute bottom-0 left-0 right-0 bg-sky-${300 + i*200} bg-opacity-${20 - i*5} h-1/3`}
+                className="absolute bottom-0 left-0 right-0"
                 initial={{ x: "-100%" }}
                 animate={{ x: "100%" }}
                 transition={{ 
@@ -263,7 +300,8 @@ export default function VideoAnimation() {
                   height: `${10 + i*5}%`,
                   bottom: `${i*5}%`,
                   opacity: 0.2 - i*0.05,
-                  borderRadius: "50% 50% 0 0"
+                  borderRadius: "50% 50% 0 0",
+                  backgroundColor: color
                 }}
               />
             ))}
@@ -273,13 +311,16 @@ export default function VideoAnimation() {
         return (
           <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
             {[...Array(8)].map((_, i) => {
-              const colors = ["border-primary", "border-accent", "border-purple-400", "border-yellow-400"];
               const size = 40 + Math.random() * 60;
               return (
                 <motion.div
                   key={i}
-                  className={`absolute rounded-full border-2 ${colors[i % colors.length]} border-opacity-40`}
-                  style={{ width: size, height: size }}
+                  className="absolute rounded-full border-2 border-opacity-40"
+                  style={{ 
+                    width: size, 
+                    height: size,
+                    borderColor: color
+                  }}
                   initial={{ 
                     x: `${Math.random() * 100}%`, 
                     y: `${Math.random() * 100}%`, 
@@ -359,27 +400,76 @@ export default function VideoAnimation() {
                     />
                     
                     {/* Dynamic graphics */}
-                    {renderGraphics(slides[currentSlide].graphicType)}
+                    {renderGraphics(slides[currentSlide].graphicType, slides[currentSlide].highlightColor)}
                     
                     {/* Text overlay */}
-                    <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 text-white z-20 ${getTextPositionClasses(slides[currentSlide].textPosition)}`}>
+                    <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 z-20 ${getTextPositionClasses(slides[currentSlide].textPosition)}`}>
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 0.8 }}
+                        className="bg-black/30 backdrop-blur-sm p-4 rounded-xl"
+                        style={{ color: slides[currentSlide].textColor || "white" }}
                       >
                         {slides[currentSlide].title && (
-                          <h3 className="font-heading text-2xl md:text-4xl font-bold mb-2 text-shadow">
-                            {slides[currentSlide].title}
-                          </h3>
+                          <motion.h3 
+                            className="font-heading text-2xl md:text-4xl font-bold mb-2"
+                            initial={{ y: 10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.3, duration: 0.5 }}
+                          >
+                            <span className="text-shadow-lg">{slides[currentSlide].title}</span>
+                          </motion.h3>
                         )}
                         {slides[currentSlide].subtitle && (
-                          <p className="text-sm md:text-base text-shadow-sm">
-                            {slides[currentSlide].subtitle}
-                          </p>
+                          <motion.p 
+                            className="text-sm md:text-base"
+                            initial={{ y: 10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.5, duration: 0.5 }}
+                            style={{ color: slides[currentSlide].textColor || "white" }}
+                          >
+                            <span className="text-shadow-sm">{slides[currentSlide].subtitle}</span>
+                          </motion.p>
                         )}
+                        
+                        {/* Added animated timeline indicator */}
+                        <motion.div className="mt-3 h-1 w-full bg-white/30 rounded-full overflow-hidden">
+                          <motion.div 
+                            className="h-full rounded-full" 
+                            initial={{ width: "0%" }}
+                            animate={{ width: "100%" }}
+                            transition={{ duration: 3, ease: "linear" }}
+                            style={{ backgroundColor: slides[currentSlide].highlightColor || "#9b87f5" }}
+                          />
+                        </motion.div>
                       </motion.div>
                     </div>
+                    
+                    {/* Slide number indicator */}
+                    <div className="absolute bottom-4 left-4 z-30 bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full text-white text-xs">
+                      {currentSlide + 1} / {slides.length}
+                    </div>
+                    
+                    {/* Added celebration text for random slides */}
+                    {currentSlide % 2 === 0 && (
+                      <motion.div 
+                        className="absolute top-4 left-4 z-30 transform -rotate-12"
+                        initial={{ scale: 0, rotate: -30 }}
+                        animate={{ scale: 1, rotate: -12 }}
+                        transition={{ delay: 0.7, type: "spring" }}
+                      >
+                        <span 
+                          className="inline-block px-4 py-2 font-bold text-white rounded-lg"
+                          style={{ 
+                            backgroundColor: slides[currentSlide].highlightColor || "#9b87f5",
+                            boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
+                          }}
+                        >
+                          {currentSlide === 0 ? "Cheers!" : currentSlide === 2 ? "Hooray!" : "Celebrate!"}
+                        </span>
+                      </motion.div>
+                    )}
                   </div>
                 </motion.div>
               </AnimatePresence>
@@ -406,18 +496,28 @@ export default function VideoAnimation() {
                             style={{ backgroundColor: slide.overlayColor || 'rgba(0,0,0,0.2)' }}
                           />
                           
-                          {/* Text overlay */}
+                          {/* Dynamic graphics for carousel view too */}
+                          {renderGraphics(slide.graphicType, slide.highlightColor)}
+                          
+                          {/* Text overlay with improved styling */}
                           <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 text-white ${getTextPositionClasses(slide.textPosition)}`}>
-                            {slide.title && (
-                              <h3 className="font-heading text-xl md:text-3xl font-bold mb-2 text-shadow">
-                                {slide.title}
-                              </h3>
-                            )}
-                            {slide.subtitle && (
-                              <p className="text-xs md:text-sm text-shadow-sm">
-                                {slide.subtitle}
-                              </p>
-                            )}
+                            <div className="bg-black/30 backdrop-blur-sm p-3 rounded-lg">
+                              {slide.title && (
+                                <h3 className="font-heading text-xl md:text-3xl font-bold mb-1 text-shadow-lg">
+                                  {slide.title}
+                                </h3>
+                              )}
+                              {slide.subtitle && (
+                                <p className="text-xs md:text-sm text-shadow-sm">
+                                  {slide.subtitle}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          
+                          {/* Slide number for carousel */}
+                          <div className="absolute bottom-2 right-2 z-10 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-full text-white text-xs">
+                            {index + 1} / {slides.length}
                           </div>
                         </div>
                       </div>
@@ -433,10 +533,22 @@ export default function VideoAnimation() {
               onClick={togglePlayback}
               className={`absolute bottom-4 right-4 z-30 p-3 rounded-full transition-all duration-300 ${isPlaying ? 'bg-white text-primary' : 'bg-primary text-white'}`}
             >
-              {isPlaying ? <Pause size={24} /> : <Play size={24} fill="none" />}
+              {isPlaying ? <Pause size={24} /> : <Play size={24} />}
             </button>
           </motion.div>
         </div>
+        
+        {/* Added instructions text */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="text-center mt-6 text-gray-600 text-sm"
+        >
+          {isPlaying ? 
+            "Enjoying the slideshow! Click pause to browse manually." : 
+            "Click play to start an automatic slideshow of Tayo's special moments."}
+        </motion.div>
       </div>
     </section>
   );
