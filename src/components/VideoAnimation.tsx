@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Play, Pause } from "lucide-react";
 import {
@@ -39,7 +38,7 @@ export default function VideoAnimation() {
       subtitle: "A beautiful journey together",
       backgroundSize: "cover",
       backgroundPosition: "center",
-      textPosition: "bottom-center",
+      textPosition: "bottom-left",
       overlayColor: "rgba(0,0,0,0.4)",
       graphicType: "hearts",
       textColor: "#ffffff",
@@ -52,7 +51,7 @@ export default function VideoAnimation() {
       subtitle: "Sailing through life's journey",
       backgroundSize: "cover",
       backgroundPosition: "center 30%",
-      textPosition: "top-center",
+      textPosition: "top-right",
       overlayColor: "rgba(0,0,0,0.3)",
       graphicType: "waves",
       textColor: "#ffffff",
@@ -402,18 +401,18 @@ export default function VideoAnimation() {
                     {/* Dynamic graphics */}
                     {renderGraphics(slides[currentSlide].graphicType, slides[currentSlide].highlightColor)}
                     
-                    {/* Text overlay */}
-                    <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 z-20 ${getTextPositionClasses(slides[currentSlide].textPosition)}`}>
+                    {/* Text overlay - Positioned better to avoid covering faces */}
+                    <div className={`absolute inset-0 flex flex-col p-6 z-20 ${getTextPositionClasses(slides[currentSlide].textPosition)}`}>
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 0.8 }}
-                        className="bg-black/30 backdrop-blur-sm p-4 rounded-xl"
+                        className="bg-black/30 backdrop-blur-sm p-3 rounded-lg max-w-sm"
                         style={{ color: slides[currentSlide].textColor || "white" }}
                       >
                         {slides[currentSlide].title && (
                           <motion.h3 
-                            className="font-heading text-2xl md:text-4xl font-bold mb-2"
+                            className="font-heading text-xl md:text-2xl font-bold mb-1"
                             initial={{ y: 10, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.3, duration: 0.5 }}
@@ -423,7 +422,7 @@ export default function VideoAnimation() {
                         )}
                         {slides[currentSlide].subtitle && (
                           <motion.p 
-                            className="text-sm md:text-base"
+                            className="text-xs md:text-sm"
                             initial={{ y: 10, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.5, duration: 0.5 }}
@@ -433,16 +432,7 @@ export default function VideoAnimation() {
                           </motion.p>
                         )}
                         
-                        {/* Added animated timeline indicator */}
-                        <motion.div className="mt-3 h-1 w-full bg-white/30 rounded-full overflow-hidden">
-                          <motion.div 
-                            className="h-full rounded-full" 
-                            initial={{ width: "0%" }}
-                            animate={{ width: "100%" }}
-                            transition={{ duration: 3, ease: "linear" }}
-                            style={{ backgroundColor: slides[currentSlide].highlightColor || "#9b87f5" }}
-                          />
-                        </motion.div>
+                        {/* Removed the animated timeline indicator */}
                       </motion.div>
                     </div>
                     

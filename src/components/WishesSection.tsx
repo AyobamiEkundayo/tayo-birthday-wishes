@@ -14,12 +14,8 @@ export default function WishesSection() {
   const [submitted, setSubmitted] = useState(false);
   const [wish, setWish] = useState("");
   const [name, setName] = useState("");
-  // Store submitted wishes
-  const [wishes, setWishes] = useState<Wish[]>([
-    { name: "Sarah", message: "Happy birthday, Tayo! Have an amazing day filled with joy and laughter!", timestamp: new Date(2023, 4, 22) },
-    { name: "James", message: "Wishing you the best birthday ever! Many happy returns of the day.", timestamp: new Date(2023, 4, 22) },
-    { name: "Maria", message: "May your special day be filled with beautiful moments and wonderful memories!", timestamp: new Date(2023, 4, 21) }
-  ]);
+  // Store submitted wishes - removed the initial sample data
+  const [wishes, setWishes] = useState<Wish[]>([]);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -153,28 +149,35 @@ export default function WishesSection() {
             </div>
             
             <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2">
-              {wishes.map((wish, index) => (
-                <motion.div 
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.3 }}
-                  className="p-3 border border-gray-100 rounded-lg bg-gray-50"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="bg-primary/20 text-primary p-2 rounded-full">
-                      <MessageSquare size={16} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-1">
-                        <h4 className="font-medium text-gray-800">{wish.name}</h4>
-                        <span className="text-xs text-gray-500">{formatDate(wish.timestamp)}</span>
+              {wishes.length > 0 ? (
+                wishes.map((wish, index) => (
+                  <motion.div 
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.3 }}
+                    className="p-3 border border-gray-100 rounded-lg bg-gray-50"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="bg-primary/20 text-primary p-2 rounded-full">
+                        <MessageSquare size={16} />
                       </div>
-                      <p className="text-gray-600 text-sm">{wish.message}</p>
+                      <div className="flex-1">
+                        <div className="flex justify-between items-center mb-1">
+                          <h4 className="font-medium text-gray-800">{wish.name}</h4>
+                          <span className="text-xs text-gray-500">{formatDate(wish.timestamp)}</span>
+                        </div>
+                        <p className="text-gray-600 text-sm">{wish.message}</p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <MessageSquare className="mx-auto mb-2 opacity-30" size={24} />
+                  <p>No wishes yet. Be the first to leave one!</p>
+                </div>
+              )}
             </div>
           </motion.div>
         </div>

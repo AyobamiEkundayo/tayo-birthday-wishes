@@ -13,7 +13,7 @@ export default function FooterSection() {
         </div>
         
         <p className="mb-2">Created with love for Tayo's birthday</p>
-        <p className="text-sm">© {new Date().getFullYear()} | All the best on your special day</p>
+        <p className="text-xs">© {new Date().getFullYear()} Ayobami Ekundayo | All the best on your special day</p>
       </div>
     </footer>
   );
