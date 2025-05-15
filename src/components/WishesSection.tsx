@@ -1,10 +1,13 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Gift, MessageSquare } from "lucide-react"; 
+import { Gift, MessageSquare, Trash2 } from "lucide-react"; 
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 // Define the Wish type for our submitted wishes
 interface Wish {
+  id: string;
   name: string;
   message: string;
   timestamp: Date;
@@ -16,12 +19,14 @@ export default function WishesSection() {
   const [name, setName] = useState("");
   // Store submitted wishes - removed the initial sample data
   const [wishes, setWishes] = useState<Wish[]>([]);
+  const { toast } = useToast();
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (wish.trim() && name.trim()) {
-      // Add the new wish to our list
+      // Add the new wish to our list with a unique ID
       const newWish: Wish = {
+        id: Date.now().toString(),
         name: name.trim(),
         message: wish.trim(),
         timestamp: new Date()
@@ -33,11 +38,26 @@ export default function WishesSection() {
       setWish("");
       setName("");
       
+      toast({
+        title: "Wish submitted!",
+        description: "Your birthday wish for Tayo has been added.",
+        variant: "success"
+      });
+      
       // Reset the submitted state after 5 seconds
       setTimeout(() => {
         setSubmitted(false);
       }, 5000);
     }
+  };
+  
+  const handleDelete = (id: string) => {
+    setWishes(wishes.filter(wish => wish.id !== id));
+    toast({
+      title: "Wish deleted",
+      description: "The birthday wish has been removed.",
+      variant: "default"
+    });
   };
   
   // Format the date for display
@@ -152,20 +172,30 @@ export default function WishesSection() {
               {wishes.length > 0 ? (
                 wishes.map((wish, index) => (
                   <motion.div 
-                    key={index}
+                    key={wish.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1, duration: 0.3 }}
-                    className="p-3 border border-gray-100 rounded-lg bg-gray-50"
+                    className="p-3 border border-gray-100 rounded-lg bg-gray-50 relative"
                   >
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-2 right-2 h-7 w-7 text-gray-500 hover:text-red-500 hover:bg-red-50"
+                      onClick={() => handleDelete(wish.id)}
+                      title="Delete wish"
+                    >
+                      <Trash2 size={16} />
+                      <span className="sr-only">Delete</span>
+                    </Button>
+                    
                     <div className="flex items-start gap-3">
                       <div className="bg-primary/20 text-primary p-2 rounded-full">
                         <MessageSquare size={16} />
                       </div>
-                      <div className="flex-1">
+                      <div className="flex-1 pr-8">
                         <div className="flex justify-between items-center mb-1">
                           <h4 className="font-medium text-gray-800">{wish.name}</h4>
-                          <span className="text-xs text-gray-500">{formatDate(wish.timestamp)}</span>
                         </div>
                         <p className="text-gray-600 text-sm">{wish.message}</p>
                       </div>

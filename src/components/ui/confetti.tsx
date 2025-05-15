@@ -84,5 +84,6 @@ export function Confetti() {
     return () => clearInterval(interval);
   }, [fire]);
 
-  return <ReactCanvasConfetti style={canvasStyles} ref={getInstance} />;
+  // Fixed the ref implementation for ReactCanvasConfetti
+  return <ReactCanvasConfetti style={canvasStyles} refConfetti={getInstance} />;
 }

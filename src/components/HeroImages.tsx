@@ -1,6 +1,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { BackgroundTexture } from "./ui/background-texture";
 
 export default function HeroImages() {
   const images = [
@@ -8,6 +9,10 @@ export default function HeroImages() {
     "/lovable-uploads/4f033b12-c280-42db-b005-d199db3042a1.png",
     "/lovable-uploads/50c5a0ca-edde-41ba-9bf3-3ed3f106f973.png",
     "/lovable-uploads/24cdb714-b6a5-4d79-ad3e-610bdb4d1e35.png",
+    "/lovable-uploads/1605e45b-384c-4950-8f6f-90cf99f7106c.png",
+    "/lovable-uploads/742c3297-f39c-4f42-8060-6348dcee0450.png",
+    "/lovable-uploads/63e0be3e-19a4-4297-beb8-83ceb7e9b673.png",
+    "/lovable-uploads/00fcf5ad-9536-4e93-b8e2-dd36586b133e.png",
   ];
 
   const container = {
@@ -26,7 +31,9 @@ export default function HeroImages() {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-accent/5">
+    <section className="py-16 relative overflow-hidden">
+      <BackgroundTexture pattern="confetti" color="#9b87f5" opacity={0.1} />
+      
       <div className="container px-4 mx-auto">
         <motion.h2 
           initial={{ opacity: 0, y: -20 }}
@@ -41,7 +48,7 @@ export default function HeroImages() {
           variants={container}
           initial="hidden"
           animate="show"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {images.map((image, index) => (
             <motion.div
@@ -64,6 +71,17 @@ export default function HeroImages() {
                   >
                     <h3 className="text-lg font-bold">Celebration Moment</h3>
                     <p className="text-sm text-white/80">Special memories</p>
+                    {/* Birthday badge animation for random images */}
+                    {(index === 2 || index === 5 || index === 7) && (
+                      <motion.div
+                        className="absolute top-3 right-3 bg-[#ea384c] text-white text-xs px-2 py-1 rounded-full transform -rotate-12"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: [0, 1.2, 1] }}
+                        transition={{ delay: 0.5, duration: 0.5 }}
+                      >
+                        Birthday!
+                      </motion.div>
+                    )}
                   </motion.div>
                 </div>
               </div>

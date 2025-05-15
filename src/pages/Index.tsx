@@ -10,6 +10,7 @@ import AnimatedHeroBanner from "@/components/AnimatedHeroBanner";
 import VideoAnimation from "@/components/VideoAnimation";
 import { Confetti } from "@/components/ui/confetti";
 import HeroImages from "@/components/HeroImages";
+import BirthdayHeader from "@/components/BirthdayHeader";
 
 const Index = () => {
   const [showConfetti, setShowConfetti] = useState(false);
@@ -26,6 +27,7 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       {showConfetti && <Confetti />}
+      <BirthdayHeader />
       <HeroSection />
       <AnimatedHeroBanner />
       <HeroImages />
@@ -37,6 +39,6 @@ const Index = () => {
       <FooterSection />
     </div>
   );
-};
+}
 
 export default Index;
