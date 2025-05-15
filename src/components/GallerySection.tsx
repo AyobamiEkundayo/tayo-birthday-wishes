@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ResponsiveImage, ResponsiveImageWithAspectRatio } from "@/components/ui/responsive-image";
+import { motion } from "framer-motion";
 
 interface GalleryImage {
   src: string;
@@ -65,32 +66,6 @@ export default function GallerySection() {
       alt: "Tayo and his wife special moment",
       backgroundSize: "cover",
       backgroundPosition: "center"
-    },
-    // Repeating some images with different crops to add more variety
-    { 
-      src: "/lovable-uploads/63e0be3e-19a4-4297-beb8-83ceb7e9b673.png", 
-      alt: "Tayo and his wife - close up",
-      backgroundSize: "cover",
-      backgroundPosition: "top center"
-    },
-    { 
-      src: "/lovable-uploads/4f033b12-c280-42db-b005-d199db3042a1.png", 
-      alt: "Tayo and his wife boat adventure",
-      backgroundSize: "cover",
-      backgroundPosition: "bottom center"
-    },
-    { 
-      src: "/lovable-uploads/00fcf5ad-9536-4e93-b8e2-dd36586b133e.png", 
-      alt: "Tayo's birthday celebration",
-      backgroundSize: "cover", 
-      backgroundPosition: "center 25%",
-      mobileBackgroundSize: "contain"
-    },
-    { 
-      src: "/lovable-uploads/24cdb714-b6a5-4d79-ad3e-610bdb4d1e35.png", 
-      alt: "Tayo's romantic moment",
-      backgroundSize: "cover",
-      backgroundPosition: "center 30%"
     }
   ];
 
@@ -106,10 +81,20 @@ export default function GallerySection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {images.map((image, index) => (
-            <div 
+            <motion.div 
               key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
               className="overflow-hidden rounded-xl shadow-soft bg-white"
             >
               <ResponsiveImageWithAspectRatio
@@ -123,9 +108,9 @@ export default function GallerySection() {
                 onClick={() => setSelectedImage(image)}
                 className="transition-transform duration-300 hover:scale-105"
               />
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>

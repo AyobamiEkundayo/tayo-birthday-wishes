@@ -85,7 +85,7 @@ export default function VideoAnimation() {
       mobileBackgroundPosition: "top center",
       textPosition: "center-left",
       overlayColor: "rgba(51,195,240,0.4)",
-      graphicType: "clouds"
+      graphicType: "circles"
     },
     {
       src: "/lovable-uploads/742c3297-f39c-4f42-8060-6348dcee0450.png",

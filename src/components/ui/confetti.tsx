@@ -1,7 +1,7 @@
 
 import React, { useCallback, useEffect, useRef } from "react";
 import ReactCanvasConfetti from "react-canvas-confetti";
-import type { CreateTypes } from "react-canvas-confetti";
+import type { IConfettiOptions } from "react-canvas-confetti";
 
 const canvasStyles = {
   position: "fixed",
@@ -14,13 +14,13 @@ const canvasStyles = {
 } as React.CSSProperties;
 
 export function Confetti() {
-  const refAnimationInstance = useRef<CreateTypes | null>(null);
+  const refAnimationInstance = useRef<any>(null);
 
-  const getInstance = useCallback((instance: CreateTypes | null) => {
+  const getInstance = useCallback((instance: any) => {
     refAnimationInstance.current = instance;
   }, []);
 
-  const makeShot = useCallback((particleRatio: number, opts: confetti.Options) => {
+  const makeShot = useCallback((particleRatio: number, opts: IConfettiOptions) => {
     refAnimationInstance.current &&
       refAnimationInstance.current({
         ...opts,
@@ -33,19 +33,19 @@ export function Confetti() {
     makeShot(0.25, {
       spread: 26,
       startVelocity: 55,
-      colors: ["#ea384c", "#8B5CF6", "#D6BCFA", "#9b87f5"],
+      colors: ["#ea384c", "#9b87f5", "#D6BCFA", "#9b87f5"],
     });
 
     makeShot(0.2, {
       spread: 60,
-      colors: ["#ea384c", "#8B5CF6", "#D6BCFA", "#9b87f5"],
+      colors: ["#ea384c", "#9b87f5", "#D6BCFA", "#9b87f5"],
     });
 
     makeShot(0.35, {
       spread: 100,
       decay: 0.91,
       scalar: 0.8,
-      colors: ["#ea384c", "#8B5CF6", "#D6BCFA", "#9b87f5"],
+      colors: ["#ea384c", "#9b87f5", "#D6BCFA", "#9b87f5"],
     });
 
     makeShot(0.1, {
@@ -53,13 +53,13 @@ export function Confetti() {
       startVelocity: 25,
       decay: 0.92,
       scalar: 1.2,
-      colors: ["#ea384c", "#8B5CF6", "#D6BCFA", "#9b87f5"],
+      colors: ["#ea384c", "#9b87f5", "#D6BCFA", "#9b87f5"],
     });
 
     makeShot(0.1, {
       spread: 120,
       startVelocity: 45,
-      colors: ["#ea384c", "#8B5CF6", "#D6BCFA", "#9b87f5"],
+      colors: ["#ea384c", "#9b87f5", "#D6BCFA", "#9b87f5"],
     });
   }, [makeShot]);
 
@@ -77,6 +77,5 @@ export function Confetti() {
     return () => clearInterval(interval);
   }, [fire]);
 
-  // The correct prop name for this library is 'ref', not 'refConfetti'
-  return <ReactCanvasConfetti ref={getInstance} style={canvasStyles} />;
+  return <ReactCanvasConfetti style={canvasStyles} refConfetti={getInstance} />;
 }

@@ -64,7 +64,7 @@ export default function AnimatedHeroBanner() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 1, duration: 0.5 }}
                   >
-                    <h3 className="text-2xl font-heading font-semibold">Happy Birthday <span className="text-[#8B5CF6]">Tayo</span>!</h3>
+                    <h3 className="text-2xl font-heading font-semibold">Happy Birthday <span className="text-[#9b87f5]">Tayo</span>!</h3>
                     <p className="text-sm text-white/80">May 23rd</p>
                   </motion.div>
                 </div>
@@ -105,13 +105,13 @@ export default function AnimatedHeroBanner() {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: [0, -15, 0], opacity: 1 }}
         transition={{ y: { repeat: Infinity, duration: 3, ease: "easeInOut" }, opacity: { duration: 1 } }}
-        className="absolute top-20 right-1/4 w-16 h-16 rounded-full bg-[#8B5CF6]/30"
+        className="absolute top-20 right-1/4 w-16 h-16 rounded-full bg-[#9b87f5]/30"
       />
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: [0, 15, 0], opacity: 1 }}
         transition={{ y: { repeat: Infinity, duration: 4, ease: "easeInOut" }, opacity: { duration: 1, delay: 0.5 } }}
-        className="absolute bottom-20 left-1/4 w-20 h-20 rounded-full bg-[#8B5CF6]/20"
+        className="absolute bottom-20 left-1/4 w-20 h-20 rounded-full bg-[#9b87f5]/20"
       />
     </div>
   );

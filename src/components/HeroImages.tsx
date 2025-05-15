@@ -34,7 +34,7 @@ export default function HeroImages() {
           transition={{ duration: 0.8 }}
           className="text-center text-4xl md:text-5xl font-heading font-bold mb-12"
         >
-          Happy Birthday <span className="text-[#8B5CF6]">Tayo</span>!
+          Happy Birthday <span className="text-[#9b87f5]">Tayo</span>!
         </motion.h2>
         
         <motion.div 
@@ -79,7 +79,7 @@ export default function HeroImages() {
         >
           <p className="text-xl font-heading">
             Wishing you a day filled with joy and laughter on your special day! 
-            <span className="text-[#8B5CF6] font-bold"> May 23rd</span> is your time to shine!
+            <span className="text-[#9b87f5] font-bold"> May 23rd</span> is your time to shine!
           </p>
         </motion.div>
       </div>
