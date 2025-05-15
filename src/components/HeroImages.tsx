@@ -35,15 +35,6 @@ export default function HeroImages() {
       <BackgroundTexture pattern="confetti" color="#9b87f5" opacity={0.1} />
       
       <div className="container px-4 mx-auto">
-        <motion.h2 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center text-4xl md:text-5xl font-heading font-bold mb-12"
-        >
-          Happy Birthday <span className="text-[#9b87f5]">Tayo</span>!
-        </motion.h2>
-        
         <motion.div 
           variants={container}
           initial="hidden"
@@ -77,7 +68,11 @@ export default function HeroImages() {
                         className="absolute top-3 right-3 bg-[#ea384c] text-white text-xs px-2 py-1 rounded-full transform -rotate-12"
                         initial={{ scale: 0 }}
                         animate={{ scale: [0, 1.2, 1] }}
-                        transition={{ delay: 0.5, duration: 0.5 }}
+                        transition={{ 
+                          type: "spring",
+                          stiffness: 260,
+                          damping: 20
+                        }}
                       >
                         Birthday!
                       </motion.div>

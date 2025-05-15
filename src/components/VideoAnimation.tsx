@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Play, Pause, Music, Volume2, VolumeX } from "lucide-react";
 import {
   Carousel,
@@ -12,13 +12,34 @@ import { motion, AnimatePresence } from "framer-motion";
 import VideoAnimationSlide from './VideoAnimationSlide';
 import { Button } from "@/components/ui/button";
 
+// Define the slide type to match the VideoSlideProps interface
+type TextPositionType = "top-left" | "top-center" | "top-right" | "center-left" | "center" | "center-right" | "bottom-left" | "bottom-center" | "bottom-right";
+type GraphicType = "hearts" | "stars" | "confetti" | "balloons" | "waves" | "circles" | "birthday" | "none";
+
+interface SlideType {
+  src: string;
+  alt: string;
+  title: string;
+  subtitle: string;
+  backgroundSize: string;
+  backgroundPosition: string;
+  mobileBackgroundSize?: string;
+  mobileBackgroundPosition?: string;
+  textPosition: TextPositionType;
+  overlayColor: string;
+  graphicType: GraphicType;
+  textColor: string;
+  highlightColor: string;
+}
+
 export default function VideoAnimation() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   
-  const slides = [
+  const slides: SlideType[] = [
     { 
       src: "/lovable-uploads/63e0be3e-19a4-4297-beb8-83ceb7e9b673.png", 
       alt: "Tayo and his wife in matching outfits",
@@ -129,6 +150,34 @@ export default function VideoAnimation() {
     }
   ];
 
+  // Create audio element for birthday song
+  useEffect(() => {
+    // Create audio element only on client-side
+    if (typeof window !== 'undefined') {
+      audioRef.current = new Audio('https://www.bensound.com/bensound-music/bensound-happybirthday.mp3');
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.3;
+      
+      return () => {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.src = '';
+        }
+      };
+    }
+  }, []);
+
+  // Handle audio playing state
+  useEffect(() => {
+    if (!audioRef.current) return;
+    
+    if (isAudioPlaying && !isMuted) {
+      audioRef.current.play().catch(e => console.log("Audio play failed:", e));
+    } else {
+      audioRef.current.pause();
+    }
+  }, [isAudioPlaying, isMuted]);
+
   // Set up a timer for automatic slideshow when playing
   useEffect(() => {
     let interval: number;
@@ -141,27 +190,6 @@ export default function VideoAnimation() {
     
     return () => clearInterval(interval);
   }, [isPlaying, slides.length]);
-
-  // Set up background music
-  useEffect(() => {
-    // Create audio element only on client-side
-    if (typeof window !== 'undefined') {
-      const audio = new Audio('https://www.bensound.com/bensound-music/bensound-happybirthday.mp3');
-      audio.loop = true;
-      audio.volume = 0.3;
-      
-      if (isAudioPlaying && !isMuted) {
-        audio.play().catch(e => console.log("Audio play failed:", e));
-      } else {
-        audio.pause();
-      }
-      
-      return () => {
-        audio.pause();
-        audio.src = '';
-      };
-    }
-  }, [isAudioPlaying, isMuted]);
 
   const togglePlayback = useCallback(() => {
     setIsPlaying(!isPlaying);
@@ -236,7 +264,7 @@ export default function VideoAnimation() {
             )}
             
             <div className="absolute bottom-4 right-4 z-30 flex items-center gap-2">
-              {isAudioPlaying && (
+              {(isAudioPlaying || isPlaying) && (
                 <Button
                   onClick={toggleAudio}
                   className="p-2 rounded-full bg-black/50 hover:bg-black/70 text-white"
@@ -276,8 +304,8 @@ export default function VideoAnimation() {
           className="text-center mt-6 text-gray-600 text-sm"
         >
           {isPlaying ? 
-            "Enjoying the slideshow! Click pause to browse manually." : 
-            "Click play to start an automatic slideshow of Tayo's special moments."}
+            "Enjoying the slideshow with birthday music! Click pause to browse manually." : 
+            "Click play to start an automatic slideshow with birthday music."}
         </motion.div>
       </div>
     </section>

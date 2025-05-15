@@ -41,7 +41,7 @@ export default function WishesSection() {
       toast({
         title: "Wish submitted!",
         description: "Your birthday wish for Tayo has been added.",
-        variant: "success"
+        variant: "default"
       });
       
       // Reset the submitted state after 5 seconds
@@ -163,9 +163,6 @@ export default function WishesSection() {
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-heading text-xl font-medium text-gray-800">Recent Wishes</h3>
-              <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                {wishes.length} wishes
-              </span>
             </div>
             
             <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2">

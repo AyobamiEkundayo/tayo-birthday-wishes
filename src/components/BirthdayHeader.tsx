@@ -21,23 +21,9 @@ export default function BirthdayHeader() {
   const birthdayLetters = "Happy Birthday Tayo!".split("");
   
   return (
-    <div className="w-full py-6 bg-gradient-to-r from-[#ea384c]/30 to-[#9b87f5]/30 overflow-hidden">
+    <div className="w-full py-6 overflow-hidden">
       <div className="container">
         <div className="relative">
-          {/* Decorative elements */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0 }} 
-            animate={{ opacity: 0.7, scale: 1 }} 
-            transition={{ duration: 1 }}
-            className="absolute -top-6 -left-6 w-16 h-16 rounded-full bg-[#ea384c]/20"
-          />
-          <motion.div 
-            initial={{ opacity: 0, scale: 0 }} 
-            animate={{ opacity: 0.7, scale: 1 }} 
-            transition={{ duration: 1, delay: 0.3 }}
-            className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full bg-[#9b87f5]/20"
-          />
-          
           <div className="flex items-center justify-center py-2 relative z-10">
             <div className="flex items-center justify-center">
               {birthdayLetters.map((letter, index) => (
@@ -70,28 +56,6 @@ export default function BirthdayHeader() {
                 </motion.span>
               ))}
             </div>
-          </div>
-        
-          {/* Birthday cake and gift icons */}
-          <div className="flex justify-center mt-2 gap-4">
-            {["🎂", "🎁", "🎉", "🎈", "🥳"].map((emoji, index) => (
-              <motion.span 
-                key={index}
-                initial={{ scale: 0 }}
-                animate={{ 
-                  scale: [0, 1.2, 1],
-                  rotate: [-10, 10, 0],
-                }}
-                transition={{ 
-                  delay: 1 + (index * 0.2),
-                  duration: 0.6,
-                  type: "spring"
-                }}
-                className="text-2xl md:text-3xl"
-              >
-                {emoji}
-              </motion.span>
-            ))}
           </div>
         </div>
       </div>

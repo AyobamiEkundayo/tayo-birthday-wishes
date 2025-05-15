@@ -1,5 +1,5 @@
 
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactCanvasConfetti from "react-canvas-confetti";
 
 const canvasStyles = {
@@ -9,81 +9,90 @@ const canvasStyles = {
   height: "100%",
   top: 0,
   left: 0,
-  zIndex: 50,
-} as React.CSSProperties;
-
-type ConfettiOptions = {
-  spread: number;
-  startVelocity?: number;
-  decay?: number;
-  scalar?: number;
-  colors?: string[];
+  zIndex: 999,
 };
 
 export function Confetti() {
-  const refAnimationInstance = useRef<any>(null);
+  const refAnimationInstance = useRef<null | confetti.CreateTypes>(null);
+  const [intervalId, setIntervalId] = useState<number | null>(null);
 
-  const getInstance = useCallback((instance: any) => {
+  const getInstance = useCallback((instance: confetti.CreateTypes | null) => {
     refAnimationInstance.current = instance;
   }, []);
 
-  const makeShot = useCallback((particleRatio: number, opts: ConfettiOptions) => {
-    refAnimationInstance.current &&
+  const nextTickAnimation = useCallback(() => {
+    if (refAnimationInstance.current) {
       refAnimationInstance.current({
-        ...opts,
-        origin: { y: 0.7, x: Math.random() },
-        particleCount: Math.floor(200 * particleRatio),
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ["#9b87f5", "#ea384c", "#F97316", "#33C3F0"],
       });
+
+      refAnimationInstance.current({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ["#9b87f5", "#ea384c", "#F97316", "#33C3F0"],
+      });
+    }
   }, []);
 
-  const fire = useCallback(() => {
-    makeShot(0.25, {
-      spread: 26,
-      startVelocity: 55,
-      colors: ["#ea384c", "#9b87f5", "#D6BCFA", "#9b87f5"],
-    });
+  const startAnimation = useCallback(() => {
+    if (!intervalId) {
+      const id = window.setInterval(nextTickAnimation, 400);
+      setIntervalId(id);
+    }
+  }, [intervalId, nextTickAnimation]);
 
-    makeShot(0.2, {
-      spread: 60,
-      colors: ["#ea384c", "#9b87f5", "#D6BCFA", "#9b87f5"],
-    });
+  const stopAnimation = useCallback(() => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(null);
+    }
+  }, [intervalId]);
 
-    makeShot(0.35, {
-      spread: 100,
-      decay: 0.91,
-      scalar: 0.8,
-      colors: ["#ea384c", "#9b87f5", "#D6BCFA", "#9b87f5"],
-    });
+  const makeFireworks = useCallback(() => {
+    if (refAnimationInstance.current) {
+      const color = ["#9b87f5", "#ea384c", "#F97316", "#33C3F0"][
+        Math.floor(Math.random() * 4)
+      ];
+      const originX = 0.1 + Math.random() * 0.8;
+      const originY = 0.1 + Math.random() * 0.3;
 
-    makeShot(0.1, {
-      spread: 120,
-      startVelocity: 25,
-      decay: 0.92,
-      scalar: 1.2,
-      colors: ["#ea384c", "#9b87f5", "#D6BCFA", "#9b87f5"],
-    });
-
-    makeShot(0.1, {
-      spread: 120,
-      startVelocity: 45,
-      colors: ["#ea384c", "#9b87f5", "#D6BCFA", "#9b87f5"],
-    });
-  }, [makeShot]);
+      refAnimationInstance.current({
+        spread: 100,
+        ticks: 50,
+        gravity: 1,
+        decay: 0.94,
+        startVelocity: 30,
+        particleCount: 100,
+        scalar: 1.2,
+        shapes: ["circle", "square"],
+        colors: [color],
+        origin: { x: originX, y: originY },
+      });
+    }
+  }, []);
 
   useEffect(() => {
-    // Fire confetti on initial load
-    setTimeout(() => {
-      fire();
-    }, 1000);
+    startAnimation();
+    
+    // Fire occasional big fireworks
+    const fireworksId = window.setInterval(makeFireworks, 2500);
 
-    // Fire confetti every 8 seconds
-    const interval = setInterval(() => {
-      fire();
-    }, 8000);
+    return () => {
+      stopAnimation();
+      clearInterval(fireworksId);
+    };
+  }, [startAnimation, stopAnimation, makeFireworks]);
 
-    return () => clearInterval(interval);
-  }, [fire]);
-
-  // Fixed the ref implementation for ReactCanvasConfetti
-  return <ReactCanvasConfetti style={canvasStyles} refConfetti={getInstance} />;
+  return (
+    <ReactCanvasConfetti
+      refConfetti={getInstance}
+      style={canvasStyles as React.CSSProperties}
+    />
+  );
 }
