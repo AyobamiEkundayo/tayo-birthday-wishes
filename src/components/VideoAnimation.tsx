@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Play, Pause, Music, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -38,6 +38,7 @@ export default function VideoAnimation() {
   const [isMuted, setIsMuted] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioLoaded, setAudioLoaded] = useState(false);
+  const [showDebug, setShowDebug] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
   const slides: SlideType[] = [
@@ -154,6 +155,7 @@ export default function VideoAnimation() {
   // Create audio element for birthday song and handle loading state
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      console.log("Setting up audio...");
       // Use a small file size happy birthday song
       const birthdaySong = 'https://www.bensound.com/bensound-music/bensound-happybirthday.mp3';
       
@@ -164,14 +166,22 @@ export default function VideoAnimation() {
       // Add event listener to track when audio is ready
       if (audioRef.current) {
         const handleCanPlayThrough = () => {
+          console.log("Audio loaded successfully!");
           setAudioLoaded(true);
         };
         
+        const handleError = (e: Event | string) => {
+          console.error("Audio loading error:", e);
+          setAudioLoaded(false);
+        };
+        
         audioRef.current.addEventListener('canplaythrough', handleCanPlayThrough);
+        audioRef.current.addEventListener('error', handleError);
         
         return () => {
           if (audioRef.current) {
             audioRef.current.removeEventListener('canplaythrough', handleCanPlayThrough);
+            audioRef.current.removeEventListener('error', handleError);
             audioRef.current.pause();
             audioRef.current.src = '';
           }
@@ -182,9 +192,10 @@ export default function VideoAnimation() {
 
   // Handle audio playing state
   useEffect(() => {
-    if (!audioRef.current || !audioLoaded) return;
+    if (!audioRef.current) return;
     
     if (isAudioPlaying && !isMuted) {
+      console.log("Attempting to play audio...");
       audioRef.current.play().catch(e => {
         console.log("Audio play failed, user interaction may be needed:", e);
       });
@@ -198,15 +209,21 @@ export default function VideoAnimation() {
     let interval: number;
     
     if (isPlaying) {
+      console.log("Starting slideshow timer");
       interval = window.setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % slides.length);
       }, 3000);
     }
     
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
   }, [isPlaying, slides.length]);
 
   const togglePlayback = useCallback(() => {
+    console.log("Toggle playback, current state:", isPlaying);
     setIsPlaying(!isPlaying);
     // Start audio when slideshow starts
     if (!isPlaying && !isAudioPlaying) {
@@ -215,6 +232,7 @@ export default function VideoAnimation() {
   }, [isPlaying, isAudioPlaying]);
 
   const toggleAudio = useCallback(() => {
+    console.log("Toggle audio, current muted state:", isMuted);
     setIsMuted(!isMuted);
   }, [isMuted]);
 
@@ -305,11 +323,24 @@ export default function VideoAnimation() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <Music size={16} className="text-white" />
                 <span className="text-xs text-white">Birthday Slideshow</span>
               </motion.div>
             )}
           </motion.div>
+          
+          {/* Debug Information */}
+          {showDebug && (
+            <div className="mt-4 p-4 bg-gray-100 rounded text-xs text-left">
+              <p>Debug - Audio State:</p>
+              <ul>
+                <li>Audio Loaded: {audioLoaded ? 'Yes' : 'No'}</li>
+                <li>Is Playing: {isPlaying ? 'Yes' : 'No'}</li>
+                <li>Is Audio Playing: {isAudioPlaying ? 'Yes' : 'No'}</li>
+                <li>Is Muted: {isMuted ? 'Yes' : 'No'}</li>
+                <li>Current Slide: {currentSlide}</li>
+              </ul>
+            </div>
+          )}
         </div>
         
         <motion.div
@@ -322,6 +353,16 @@ export default function VideoAnimation() {
             "Enjoying the slideshow with birthday music! Click pause to browse manually." : 
             "Click play to start an automatic slideshow with birthday music."}
         </motion.div>
+        
+        {/* Debug toggle button */}
+        <div className="text-center mt-2">
+          <button 
+            onClick={() => setShowDebug(!showDebug)}
+            className="text-xs text-gray-400 hover:text-gray-600"
+          >
+            {showDebug ? "Hide Debug Info" : ""}
+          </button>
+        </div>
       </div>
     </section>
   );

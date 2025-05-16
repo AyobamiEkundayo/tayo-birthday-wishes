@@ -96,7 +96,7 @@ export const Confetti = ({ duration = 3000 }: ConfettiProps) => {
         left: 0,
         zIndex: 1000,
       }}
-      ref={getInstance}
+      refConfetti={getInstance}
     />
   );
 };

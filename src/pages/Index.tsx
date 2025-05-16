@@ -27,9 +27,10 @@ const Index = () => {
     // Add class to body for better mobile handling
     document.body.classList.add('overflow-x-hidden');
     
-    // Delay confetti to ensure it loads properly
+    // Show confetti after a short delay
     const timer = setTimeout(() => {
       setShowConfetti(true);
+      console.log("Showing confetti");
     }, 500);
 
     return () => {
@@ -59,7 +60,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen max-w-full">
-      {showConfetti && <Confetti />}
+      {showConfetti && <Confetti duration={5000} />}
       <HeroSection />
       <AnimatedHeroBanner />
       <HeroImages />
