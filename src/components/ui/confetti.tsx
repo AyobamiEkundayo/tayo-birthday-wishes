@@ -1,98 +1,102 @@
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+"use client";
+
+import { useEffect, useState, useRef, CSSProperties } from "react";
 import ReactCanvasConfetti from "react-canvas-confetti";
+import { CreateTypes } from "canvas-confetti";
 
-const canvasStyles = {
-  position: "fixed",
-  pointerEvents: "none",
-  width: "100%",
-  height: "100%",
-  top: 0,
-  left: 0,
-  zIndex: 999,
-};
+interface ConfettiProps {
+  duration?: number;
+}
 
-export function Confetti() {
-  const refAnimationInstance = useRef<null | confetti.CreateTypes>(null);
-  const [intervalId, setIntervalId] = useState<number | null>(null);
+export const Confetti = ({ duration = 3000 }: ConfettiProps) => {
+  const [isActive, setIsActive] = useState(true);
+  const confettiRef = useRef<CreateTypes | null>(null);
 
-  const getInstance = useCallback((instance: confetti.CreateTypes | null) => {
-    refAnimationInstance.current = instance;
-  }, []);
+  const getInstance = (instance: CreateTypes | null) => {
+    confettiRef.current = instance;
+  };
 
-  const nextTickAnimation = useCallback(() => {
-    if (refAnimationInstance.current) {
-      refAnimationInstance.current({
-        particleCount: 2,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: ["#9b87f5", "#ea384c", "#F97316", "#33C3F0"],
-      });
-
-      refAnimationInstance.current({
-        particleCount: 2,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: ["#9b87f5", "#ea384c", "#F97316", "#33C3F0"],
+  const makeShot = (particleRatio: number, opts: object) => {
+    if (confettiRef.current) {
+      confettiRef.current({
+        ...opts,
+        origin: { y: 0.5, x: 0.5 },
+        particleCount: Math.floor(200 * particleRatio),
       });
     }
-  }, []);
+  };
 
-  const startAnimation = useCallback(() => {
-    if (!intervalId) {
-      const id = window.setInterval(nextTickAnimation, 400);
-      setIntervalId(id);
-    }
-  }, [intervalId, nextTickAnimation]);
+  const fire = () => {
+    makeShot(0.25, {
+      spread: 26,
+      startVelocity: 55,
+      decay: 0.91,
+      scalar: 0.8,
+      ticks: 100,
+      colors: ['#9b87f5', '#ea384c', '#F97316', '#33C3F0', '#D6BCFA']
+    });
 
-  const stopAnimation = useCallback(() => {
-    if (intervalId) {
-      clearInterval(intervalId);
-      setIntervalId(null);
-    }
-  }, [intervalId]);
+    makeShot(0.2, {
+      spread: 60,
+      startVelocity: 45,
+      decay: 0.92,
+      scalar: 1.2,
+      ticks: 120,
+      colors: ['#9b87f5', '#ea384c', '#F97316', '#33C3F0', '#D6BCFA']
+    });
 
-  const makeFireworks = useCallback(() => {
-    if (refAnimationInstance.current) {
-      const color = ["#9b87f5", "#ea384c", "#F97316", "#33C3F0"][
-        Math.floor(Math.random() * 4)
-      ];
-      const originX = 0.1 + Math.random() * 0.8;
-      const originY = 0.1 + Math.random() * 0.3;
+    makeShot(0.1, {
+      spread: 100,
+      decay: 0.91,
+      scalar: 0.8,
+      ticks: 90,
+      colors: ['#9b87f5', '#ea384c', '#F97316', '#33C3F0', '#D6BCFA']
+    });
 
-      refAnimationInstance.current({
-        spread: 100,
-        ticks: 50,
-        gravity: 1,
-        decay: 0.94,
-        startVelocity: 30,
-        particleCount: 100,
-        scalar: 1.2,
-        shapes: ["circle", "square"],
-        colors: [color],
-        origin: { x: originX, y: originY },
-      });
-    }
-  }, []);
+    makeShot(0.1, {
+      spread: 120,
+      startVelocity: 35,
+      decay: 0.9,
+      scalar: 1,
+      ticks: 100,
+      colors: ['#9b87f5', '#ea384c', '#F97316', '#33C3F0', '#D6BCFA']
+    });
+
+    makeShot(0.15, {
+      spread: 160,
+      startVelocity: 30,
+      decay: 0.92,
+      scalar: 1.2,
+      ticks: 110,
+      colors: ['#9b87f5', '#ea384c', '#F97316', '#33C3F0', '#D6BCFA']
+    });
+  };
 
   useEffect(() => {
-    startAnimation();
-    
-    // Fire occasional big fireworks
-    const fireworksId = window.setInterval(makeFireworks, 2500);
+    if (isActive && confettiRef.current) {
+      fire();
 
-    return () => {
-      stopAnimation();
-      clearInterval(fireworksId);
-    };
-  }, [startAnimation, stopAnimation, makeFireworks]);
+      const timeout = setTimeout(() => {
+        setIsActive(false);
+      }, duration);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [isActive, duration, confettiRef.current]);
 
   return (
     <ReactCanvasConfetti
-      refConfetti={getInstance}
-      style={canvasStyles as React.CSSProperties}
+      style={{
+        position: "fixed",
+        pointerEvents: "none",
+        width: "100%",
+        height: "100%",
+        top: 0,
+        left: 0,
+        zIndex: 1000,
+      }}
+      ref={getInstance}
     />
   );
-}
+};

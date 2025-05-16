@@ -10,7 +10,6 @@ import AnimatedHeroBanner from "@/components/AnimatedHeroBanner";
 import VideoAnimation from "@/components/VideoAnimation";
 import { Confetti } from "@/components/ui/confetti";
 import HeroImages from "@/components/HeroImages";
-import BirthdayHeader from "@/components/BirthdayHeader";
 
 // Add a helper component for responsive meta tags
 const ResponsiveMetaTags = () => (
@@ -61,7 +60,6 @@ const Index = () => {
   return (
     <div className="min-h-screen max-w-full">
       {showConfetti && <Confetti />}
-      <BirthdayHeader />
       <HeroSection />
       <AnimatedHeroBanner />
       <HeroImages />

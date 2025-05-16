@@ -22,7 +22,7 @@ export default function FooterSection() {
         </div>
         
         <p className="mb-2">Created with love for Tayo's birthday</p>
-        <p className="text-xs">© 2025 Ayobami Ekundayo | All the best on your special day</p>
+        <p className="text-xs opacity-70">© 2025 Ayobami Ekundayo | All the best on your special day</p>
         
         <AnimatePresence>
           <motion.div
