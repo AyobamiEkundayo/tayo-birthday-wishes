@@ -1,9 +1,9 @@
 
 "use client";
 
-import { useEffect, useState, useRef, CSSProperties } from "react";
+import { useEffect, useState, useRef } from "react";
 import ReactCanvasConfetti from "react-canvas-confetti";
-import { CreateTypes } from "canvas-confetti";
+import type { CreateTypes } from "canvas-confetti";
 
 interface ConfettiProps {
   duration?: number;
@@ -96,7 +96,8 @@ export const Confetti = ({ duration = 3000 }: ConfettiProps) => {
         left: 0,
         zIndex: 1000,
       }}
-      ref={getInstance}
+      refConfetti={getInstance}
     />
   );
 };
+

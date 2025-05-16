@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { ResponsiveImageWithAspectRatio } from "@/components/ui/responsive-image";
@@ -255,13 +254,13 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
             ))}
           </motion.div>
           
-          {/* Birthday cake emoji with animation */}
+          {/* Birthday cake emoji with animation - FIX: Change from scale: [0, 1.2, 1] to scale: [0, 1] */}
           <motion.div
             className="absolute bottom-8 right-8"
             initial={{ opacity: 0, scale: 0 }}
             animate={{ 
-              opacity: [0, 1, 1],
-              scale: [0, 1.2, 1],
+              opacity: 1,
+              scale: 1,
               rotate: [0, -10, 10, 0],
               y: [0, -5, 0]
             }}
@@ -295,7 +294,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
                 }}
                 animate={{ 
                   opacity: [0, 1, 0],
-                  scale: [0, 1, 0],
+                  scale: [0, 1],
                   rotate: Math.random() * 360
                 }}
                 transition={{ 
