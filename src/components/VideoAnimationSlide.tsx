@@ -1,7 +1,7 @@
+
 import React from "react";
 import { motion } from "framer-motion";
-import { ResponsiveImageWithAspectRatio } from "@/components/ui/responsive-image";
-import { useBackgroundImage, BackgroundImageSettings } from "@/hooks/use-background-image";
+import { useBackgroundImage } from "@/hooks/use-background-image";
 
 // Helper function to determine text position classes based on the position prop
 function getTextPositionClasses(position?: string) {
@@ -91,7 +91,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
     case "confetti":
       return (
         <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-          {[...Array(count * 3)].map((_, i) => {
+          {[...Array(Math.min(count * 3, 12))].map((_, i) => {
             const colors = ["#ea384c", "#9b87f5", "#D6BCFA", color, "#F97316"];
             const size = Math.random() * 8 + 4;
             return (
@@ -128,7 +128,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
     case "balloons":
       return (
         <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-          {[...Array(count)].map((_, i) => {
+          {[...Array(Math.min(count, 5))].map((_, i) => {
             const emojis = ["🎈", "🎁", "🎂", "🎊", "🎉"];
             return (
               <motion.div
@@ -186,7 +186,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
     case "circles":
       return (
         <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-          {[...Array(count)].map((_, i) => {
+          {[...Array(Math.min(count, 5))].map((_, i) => {
             const size = 40 + Math.random() * 60;
             return (
               <motion.div
@@ -254,7 +254,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
             ))}
           </motion.div>
           
-          {/* Birthday cake emoji with animation - FIX: Change from scale: [0, 1.2, 1] to scale: [0, 1] */}
+          {/* Birthday cake emoji with animation */}
           <motion.div
             className="absolute bottom-8 right-8"
             initial={{ opacity: 0, scale: 0 }}
@@ -274,8 +274,8 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
             <span className="text-4xl md:text-6xl filter drop-shadow-lg">🎂</span>
           </motion.div>
           
-          {/* Confetti particles */}
-          {[...Array(15)].map((_, i) => {
+          {/* Confetti particles - limited to 10 for better performance */}
+          {[...Array(10)].map((_, i) => {
             const colors = ["#ea384c", "#9b87f5", "#F97316", "#33C3F0", "#D6BCFA"];
             const size = Math.random() * 6 + 3;
             return (
@@ -313,10 +313,17 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
   }
 }
 
-export interface VideoSlideProps extends BackgroundImageSettings {
+export interface VideoSlideProps {
+  src: string;
+  alt: string;
   title?: string;
   subtitle?: string;
+  backgroundSize?: string;
+  backgroundPosition?: string;
+  mobileBackgroundSize?: string;
+  mobileBackgroundPosition?: string;
   textPosition?: "top-left" | "top-center" | "top-right" | "center-left" | "center" | "center-right" | "bottom-left" | "bottom-center" | "bottom-right";
+  overlayColor?: string;
   graphicType?: "hearts" | "stars" | "confetti" | "balloons" | "waves" | "circles" | "birthday" | "none";
   textColor?: string;
   highlightColor?: string;

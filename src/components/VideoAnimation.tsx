@@ -37,6 +37,7 @@ export default function VideoAnimation() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [audioLoaded, setAudioLoaded] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
   const slides: SlideType[] = [
@@ -150,33 +151,47 @@ export default function VideoAnimation() {
     }
   ];
 
-  // Create audio element for birthday song
+  // Create audio element for birthday song and handle loading state
   useEffect(() => {
-    // Create audio element only on client-side
     if (typeof window !== 'undefined') {
-      audioRef.current = new Audio('https://www.bensound.com/bensound-music/bensound-happybirthday.mp3');
+      // Use a small file size happy birthday song
+      const birthdaySong = 'https://www.bensound.com/bensound-music/bensound-happybirthday.mp3';
+      
+      audioRef.current = new Audio(birthdaySong);
       audioRef.current.loop = true;
       audioRef.current.volume = 0.3;
       
-      return () => {
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.src = '';
-        }
-      };
+      // Add event listener to track when audio is ready
+      if (audioRef.current) {
+        const handleCanPlayThrough = () => {
+          setAudioLoaded(true);
+        };
+        
+        audioRef.current.addEventListener('canplaythrough', handleCanPlayThrough);
+        
+        return () => {
+          if (audioRef.current) {
+            audioRef.current.removeEventListener('canplaythrough', handleCanPlayThrough);
+            audioRef.current.pause();
+            audioRef.current.src = '';
+          }
+        };
+      }
     }
   }, []);
 
   // Handle audio playing state
   useEffect(() => {
-    if (!audioRef.current) return;
+    if (!audioRef.current || !audioLoaded) return;
     
     if (isAudioPlaying && !isMuted) {
-      audioRef.current.play().catch(e => console.log("Audio play failed:", e));
-    } else {
+      audioRef.current.play().catch(e => {
+        console.log("Audio play failed, user interaction may be needed:", e);
+      });
+    } else if (audioRef.current) {
       audioRef.current.pause();
     }
-  }, [isAudioPlaying, isMuted]);
+  }, [isAudioPlaying, isMuted, audioLoaded]);
 
   // Set up a timer for automatic slideshow when playing
   useEffect(() => {
@@ -204,7 +219,7 @@ export default function VideoAnimation() {
   }, [isMuted]);
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-br from-primary/5 to-accent/5">
+    <section className="py-16 md:py-20 px-4 bg-gradient-to-br from-primary/5 to-accent/5">
       <div className="container">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
