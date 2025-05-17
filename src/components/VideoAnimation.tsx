@@ -16,9 +16,19 @@ import { slides } from './VideoAnimationData';
 export default function VideoAnimation() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true); // Start muted to avoid autoplay issues
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const [showDebug, setShowDebug] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  // Mark component as loaded after a short delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+      console.log("VideoAnimation component loaded");
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   // Set up a timer for automatic slideshow when playing
   useEffect(() => {
@@ -51,6 +61,23 @@ export default function VideoAnimation() {
     console.log("Toggle audio, current muted state:", isMuted);
     setIsMuted(!isMuted);
   }, [isMuted]);
+
+  // If not loaded yet, show a loading placeholder
+  if (!isLoaded) {
+    return (
+      <section className="py-16 md:py-20 px-4 bg-gradient-to-br from-primary/5 to-accent/5">
+        <div className="container">
+          <div className="text-center">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+              Moments in Motion
+            </h2>
+            <p className="text-gray-600">Loading special memories...</p>
+            <div className="max-w-4xl mx-auto h-64 bg-gray-100 animate-pulse rounded-xl mt-8"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 md:py-20 px-4 bg-gradient-to-br from-primary/5 to-accent/5">
@@ -127,19 +154,6 @@ export default function VideoAnimation() {
               onToggleAudio={toggleAudio}
             />
           </motion.div>
-          
-          {/* Debug Information */}
-          {showDebug && (
-            <div className="mt-4 p-4 bg-gray-100 rounded text-xs text-left">
-              <p>Debug - Audio State:</p>
-              <ul>
-                <li>Is Playing: {isPlaying ? 'Yes' : 'No'}</li>
-                <li>Is Audio Playing: {isAudioPlaying ? 'Yes' : 'No'}</li>
-                <li>Is Muted: {isMuted ? 'Yes' : 'No'}</li>
-                <li>Current Slide: {currentSlide}</li>
-              </ul>
-            </div>
-          )}
         </div>
         
         <motion.div
@@ -152,16 +166,6 @@ export default function VideoAnimation() {
             "Enjoying the slideshow with birthday music! Click pause to browse manually." : 
             "Click play to start an automatic slideshow with birthday music."}
         </motion.div>
-        
-        {/* Debug toggle button */}
-        <div className="text-center mt-2">
-          <button 
-            onClick={() => setShowDebug(!showDebug)}
-            className="text-xs text-gray-400 hover:text-gray-600"
-          >
-            {showDebug ? "Hide Debug Info" : ""}
-          </button>
-        </div>
       </div>
     </section>
   );

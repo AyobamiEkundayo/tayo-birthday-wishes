@@ -236,8 +236,8 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
                   marginLeft: letter === "" ? "8px" : "0",
                 }}
                 animate={{ 
-                  y: [0, -10, 0], 
-                  scale: [1, 1.2, 1]
+                  y: [-5, 5, -5],  // Modified to use simpler keyframes
+                  scale: [1, 1.1, 1] // Modified to use simpler keyframes
                 }}
                 transition={{
                   repeat: Infinity,
@@ -258,7 +258,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
             animate={{ 
               opacity: 1,
               scale: 1,
-              y: [0, -5, 0]
+              y: [-2, 2, -2] // Simplified keyframes
             }}
             transition={{
               duration: 2,

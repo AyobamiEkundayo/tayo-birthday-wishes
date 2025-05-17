@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import ReactCanvasConfetti from "react-canvas-confetti";
 import type { CreateTypes } from "canvas-confetti";
 
@@ -13,11 +13,11 @@ export const Confetti = ({ duration = 3000 }: ConfettiProps) => {
   const [isActive, setIsActive] = useState(true);
   const [confettiInstance, setConfettiInstance] = useState<CreateTypes | null>(null);
 
-  const getInstance = (instance: CreateTypes | null) => {
+  const getInstance = useCallback((instance: CreateTypes | null) => {
     setConfettiInstance(instance);
-  };
+  }, []);
 
-  const makeShot = (particleRatio: number, opts: object) => {
+  const makeShot = useCallback((particleRatio: number, opts: object) => {
     if (confettiInstance) {
       confettiInstance({
         ...opts,
@@ -25,9 +25,11 @@ export const Confetti = ({ duration = 3000 }: ConfettiProps) => {
         particleCount: Math.floor(200 * particleRatio),
       });
     }
-  };
+  }, [confettiInstance]);
 
-  const fire = () => {
+  const fire = useCallback(() => {
+    if (!confettiInstance) return;
+    
     makeShot(0.25, {
       spread: 26,
       startVelocity: 55,
@@ -45,26 +47,11 @@ export const Confetti = ({ duration = 3000 }: ConfettiProps) => {
       ticks: 120,
       colors: ['#9b87f5', '#ea384c', '#F97316', '#33C3F0', '#D6BCFA']
     });
-
-    makeShot(0.1, {
-      spread: 100,
-      decay: 0.91,
-      scalar: 0.8,
-      ticks: 90,
-      colors: ['#9b87f5', '#ea384c', '#F97316', '#33C3F0', '#D6BCFA']
-    });
-
-    makeShot(0.1, {
-      spread: 120,
-      startVelocity: 35,
-      decay: 0.9,
-      scalar: 1,
-      ticks: 100,
-      colors: ['#9b87f5', '#ea384c', '#F97316', '#33C3F0', '#D6BCFA']
-    });
-  };
+  }, [confettiInstance, makeShot]);
 
   useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+    
     if (isActive && confettiInstance) {
       try {
         fire();
@@ -72,13 +59,15 @@ export const Confetti = ({ duration = 3000 }: ConfettiProps) => {
         console.error("Error firing confetti:", error);
       }
 
-      const timeout = setTimeout(() => {
+      timeout = setTimeout(() => {
         setIsActive(false);
       }, duration);
-
-      return () => clearTimeout(timeout);
     }
-  }, [isActive, duration, confettiInstance]);
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [isActive, duration, confettiInstance, fire]);
 
   return (
     <ReactCanvasConfetti
