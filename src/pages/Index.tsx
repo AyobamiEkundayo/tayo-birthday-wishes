@@ -11,15 +11,6 @@ import VideoAnimation from "@/components/VideoAnimation";
 import { Confetti } from "@/components/ui/confetti";
 import HeroImages from "@/components/HeroImages";
 
-// Add a helper component for responsive meta tags
-const ResponsiveMetaTags = () => (
-  <React.Fragment>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#9b87f5" />
-    <link rel="manifest" href="/manifest.json" />
-  </React.Fragment>
-);
-
 const Index = () => {
   const [showConfetti, setShowConfetti] = useState(false);
 

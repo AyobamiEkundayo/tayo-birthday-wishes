@@ -12,40 +12,37 @@ export default function VideoAnimationAudio({ isPlaying, isMuted }: VideoAnimati
   
   // Create audio element for birthday song and handle loading state
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      console.log("Setting up audio...");
-      // Use a small file size happy birthday song
-      const birthdaySong = 'https://www.bensound.com/bensound-music/bensound-happybirthday.mp3';
-      
-      audioRef.current = new Audio(birthdaySong);
-      audioRef.current.loop = true;
-      audioRef.current.volume = 0.3;
-      
-      // Add event listener to track when audio is ready
+    console.log("Setting up audio...");
+    // Use a small file size happy birthday song
+    const birthdaySong = 'https://www.bensound.com/bensound-music/bensound-happybirthday.mp3';
+    
+    const audio = new Audio(birthdaySong);
+    audio.loop = true;
+    audio.volume = 0.3;
+    audioRef.current = audio;
+    
+    // Add event listener to track when audio is ready
+    const handleCanPlayThrough = () => {
+      console.log("Audio loaded successfully!");
+      setAudioLoaded(true);
+    };
+    
+    const handleError = (e: Event) => {
+      console.error("Audio loading error:", e);
+      setAudioLoaded(false);
+    };
+    
+    audio.addEventListener('canplaythrough', handleCanPlayThrough);
+    audio.addEventListener('error', handleError);
+    
+    return () => {
       if (audioRef.current) {
-        const handleCanPlayThrough = () => {
-          console.log("Audio loaded successfully!");
-          setAudioLoaded(true);
-        };
-        
-        const handleError = (e: Event | string) => {
-          console.error("Audio loading error:", e);
-          setAudioLoaded(false);
-        };
-        
-        audioRef.current.addEventListener('canplaythrough', handleCanPlayThrough);
-        audioRef.current.addEventListener('error', handleError);
-        
-        return () => {
-          if (audioRef.current) {
-            audioRef.current.removeEventListener('canplaythrough', handleCanPlayThrough);
-            audioRef.current.removeEventListener('error', handleError);
-            audioRef.current.pause();
-            audioRef.current.src = '';
-          }
-        };
+        audioRef.current.removeEventListener('canplaythrough', handleCanPlayThrough);
+        audioRef.current.removeEventListener('error', handleError);
+        audioRef.current.pause();
+        audioRef.current.src = '';
       }
-    }
+    };
   }, []);
 
   // Handle audio playing state
