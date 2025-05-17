@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import ReactCanvasConfetti from "react-canvas-confetti";
 import type { CreateTypes } from "canvas-confetti";
 
@@ -11,15 +11,15 @@ interface ConfettiProps {
 
 export const Confetti = ({ duration = 3000 }: ConfettiProps) => {
   const [isActive, setIsActive] = useState(true);
-  const confettiRef = useRef<CreateTypes | null>(null);
+  const [confettiInstance, setConfettiInstance] = useState<CreateTypes | null>(null);
 
   const getInstance = (instance: CreateTypes | null) => {
-    confettiRef.current = instance;
+    setConfettiInstance(instance);
   };
 
   const makeShot = (particleRatio: number, opts: object) => {
-    if (confettiRef.current) {
-      confettiRef.current({
+    if (confettiInstance) {
+      confettiInstance({
         ...opts,
         origin: { y: 0.5, x: 0.5 },
         particleCount: Math.floor(200 * particleRatio),
@@ -74,7 +74,7 @@ export const Confetti = ({ duration = 3000 }: ConfettiProps) => {
   };
 
   useEffect(() => {
-    if (isActive && confettiRef.current) {
+    if (isActive && confettiInstance) {
       fire();
 
       const timeout = setTimeout(() => {
@@ -83,7 +83,7 @@ export const Confetti = ({ duration = 3000 }: ConfettiProps) => {
 
       return () => clearTimeout(timeout);
     }
-  }, [isActive, duration, confettiRef.current]);
+  }, [isActive, duration, confettiInstance]);
 
   return (
     <ReactCanvasConfetti

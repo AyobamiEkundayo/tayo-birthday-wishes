@@ -22,7 +22,7 @@ const Index = () => {
     const timer = setTimeout(() => {
       setShowConfetti(true);
       console.log("Showing confetti");
-    }, 500);
+    }, 1500); // Increased delay to ensure page loads first
 
     return () => {
       clearTimeout(timer);
@@ -33,16 +33,18 @@ const Index = () => {
   // Add the head tags for better responsiveness
   useEffect(() => {
     // Create viewport meta tag if it doesn't exist
-    if (!document.querySelector('meta[name="viewport"]')) {
-      const meta = document.createElement('meta');
-      meta.name = 'viewport';
-      meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
-      document.head.appendChild(meta);
+    let metaViewport = document.querySelector('meta[name="viewport"]');
+    if (!metaViewport) {
+      metaViewport = document.createElement('meta');
+      metaViewport.name = 'viewport';
+      metaViewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+      document.head.appendChild(metaViewport);
     }
     
     // Theme color for mobile browsers
-    if (!document.querySelector('meta[name="theme-color"]')) {
-      const themeColor = document.createElement('meta');
+    let themeColor = document.querySelector('meta[name="theme-color"]');
+    if (!themeColor) {
+      themeColor = document.createElement('meta');
       themeColor.name = 'theme-color';
       themeColor.content = '#9b87f5';
       document.head.appendChild(themeColor);

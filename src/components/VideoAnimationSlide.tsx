@@ -48,7 +48,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
               className="absolute text-primary-foreground opacity-80"
               initial={{ scale: 0, rotate: 0, x: `${Math.random() * 100}%`, y: `${Math.random() * 100}%` }}
               animate={{ 
-                scale: [0, 1, 0.8], 
+                scale: [0, 1, 0], 
                 rotate: [0, 10, -10, 0],
                 opacity: [0, 0.8, 0] 
               }}
@@ -73,7 +73,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
               className="absolute text-yellow-400"
               initial={{ scale: 0, x: `${Math.random() * 100}%`, y: `${Math.random() * 100}%` }}
               animate={{ 
-                scale: [0, 1.2, 0], 
+                scale: [0, 1, 0], 
                 opacity: [0, 1, 0] 
               }}
               transition={{ 
@@ -111,8 +111,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
                 animate={{ 
                   y: "110%", 
                   x: `${50 + (Math.random() * 100 - 50)}%`,
-                  opacity: [1, 1, 0],
-                  rotate: Math.random() * 360
+                  opacity: [1, 1, 0]
                 }}
                 transition={{ 
                   repeat: Infinity, 
@@ -141,8 +140,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
                 }}
                 animate={{ 
                   y: "-20%",
-                  opacity: [0, 1, 1, 0],
-                  rotate: [0, 10, -10, 5]
+                  opacity: [0, 1, 0]
                 }}
                 transition={{ 
                   repeat: Infinity, 
@@ -204,7 +202,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
                   opacity: 0 
                 }}
                 animate={{ 
-                  scale: [0, 1.5, 2],
+                  scale: [0, 1.5, 0],
                   opacity: [0, 0.5, 0]
                 }}
                 transition={{ 
@@ -239,8 +237,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
                 }}
                 animate={{ 
                   y: [0, -10, 0], 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, letter === "!" ? 20 : -5, 0]
+                  scale: [1, 1.2, 1]
                 }}
                 transition={{
                   repeat: Infinity,
@@ -261,7 +258,6 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
             animate={{ 
               opacity: 1,
               scale: 1,
-              rotate: [0, -10, 10, 0],
               y: [0, -5, 0]
             }}
             transition={{
@@ -274,8 +270,8 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
             <span className="text-4xl md:text-6xl filter drop-shadow-lg">🎂</span>
           </motion.div>
           
-          {/* Confetti particles - limited to 10 for better performance */}
-          {[...Array(10)].map((_, i) => {
+          {/* Confetti particles - limited for better performance */}
+          {[...Array(8)].map((_, i) => {
             const colors = ["#ea384c", "#9b87f5", "#F97316", "#33C3F0", "#D6BCFA"];
             const size = Math.random() * 6 + 3;
             return (
@@ -294,8 +290,7 @@ export function SlideGraphics({ type, color = "#9b87f5", intensity = "medium" }:
                 }}
                 animate={{ 
                   opacity: [0, 1, 0],
-                  scale: [0, 1],
-                  rotate: Math.random() * 360
+                  scale: [0, 1, 0]
                 }}
                 transition={{ 
                   repeat: Infinity, 

@@ -13,8 +13,8 @@ export default function VideoAnimationAudio({ isPlaying, isMuted }: VideoAnimati
   // Create audio element for birthday song and handle loading state
   useEffect(() => {
     console.log("Setting up audio...");
-    // Use a small file size happy birthday song
-    const birthdaySong = 'https://www.bensound.com/bensound-music/bensound-happybirthday.mp3';
+    // Use a small file size happy birthday song, but host on a more reliable CDN
+    const birthdaySong = 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0c6ff1bab.mp3';
     
     const audio = new Audio(birthdaySong);
     audio.loop = true;
@@ -35,6 +35,9 @@ export default function VideoAnimationAudio({ isPlaying, isMuted }: VideoAnimati
     audio.addEventListener('canplaythrough', handleCanPlayThrough);
     audio.addEventListener('error', handleError);
     
+    // Start preloading
+    audio.load();
+    
     return () => {
       if (audioRef.current) {
         audioRef.current.removeEventListener('canplaythrough', handleCanPlayThrough);
@@ -47,17 +50,27 @@ export default function VideoAnimationAudio({ isPlaying, isMuted }: VideoAnimati
 
   // Handle audio playing state
   useEffect(() => {
-    if (!audioRef.current) return;
+    if (!audioRef.current || !audioLoaded) return;
     
-    if (isPlaying && !isMuted && audioLoaded) {
+    if (isPlaying && !isMuted) {
       console.log("Attempting to play audio...");
-      audioRef.current.play().catch(e => {
-        console.log("Audio play failed, user interaction may be needed:", e);
-      });
+      const playPromise = audioRef.current.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch(e => {
+          console.log("Audio play failed, user interaction may be needed:", e);
+        });
+      }
     } else if (audioRef.current) {
       audioRef.current.pause();
     }
   }, [isPlaying, isMuted, audioLoaded]);
+
+  // Handle mute state
+  useEffect(() => {
+    if (!audioRef.current) return;
+    audioRef.current.muted = isMuted;
+  }, [isMuted]);
 
   return null; // Audio component doesn't render anything
 }
