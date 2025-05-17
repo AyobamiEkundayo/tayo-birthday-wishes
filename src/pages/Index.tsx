@@ -36,8 +36,8 @@ const Index = () => {
     let metaViewport = document.querySelector('meta[name="viewport"]');
     if (!metaViewport) {
       metaViewport = document.createElement('meta');
-      metaViewport.name = 'viewport';
-      metaViewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+      metaViewport.setAttribute('name', 'viewport');
+      metaViewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
       document.head.appendChild(metaViewport);
     }
     
@@ -45,8 +45,8 @@ const Index = () => {
     let themeColor = document.querySelector('meta[name="theme-color"]');
     if (!themeColor) {
       themeColor = document.createElement('meta');
-      themeColor.name = 'theme-color';
-      themeColor.content = '#9b87f5';
+      themeColor.setAttribute('name', 'theme-color');
+      themeColor.setAttribute('content', '#9b87f5');
       document.head.appendChild(themeColor);
     }
   }, []);

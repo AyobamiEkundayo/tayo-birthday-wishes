@@ -62,20 +62,15 @@ export const Confetti = ({ duration = 3000 }: ConfettiProps) => {
       ticks: 100,
       colors: ['#9b87f5', '#ea384c', '#F97316', '#33C3F0', '#D6BCFA']
     });
-
-    makeShot(0.15, {
-      spread: 160,
-      startVelocity: 30,
-      decay: 0.92,
-      scalar: 1.2,
-      ticks: 110,
-      colors: ['#9b87f5', '#ea384c', '#F97316', '#33C3F0', '#D6BCFA']
-    });
   };
 
   useEffect(() => {
     if (isActive && confettiInstance) {
-      fire();
+      try {
+        fire();
+      } catch (error) {
+        console.error("Error firing confetti:", error);
+      }
 
       const timeout = setTimeout(() => {
         setIsActive(false);
